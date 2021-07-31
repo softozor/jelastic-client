@@ -1,0 +1,24 @@
+stages:
+- lint
+- publish
+
+lint:
+  stage: lint
+  image: softozor/python-lint:$TOOLS_SHA
+  script:
+  - autopep8 -rd . --exit-code
+
+publish:
+  stage: publish
+  image: softozor/python-publish:$TOOLS_SHA
+  before_script:
+  - export VERSION=`bump`
+  - echo "version ${VERSION}"
+  script:
+  - python3 setup.py sdist bdist_wheel
+  - |
+    TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token 
+    python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+
+# see here how to install that package in other projects
+# -> https://docs.gitlab.com/ee/user/packages/pypi_repository/#install-a-pypi-package
