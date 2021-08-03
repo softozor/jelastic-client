@@ -1,13 +1,18 @@
 import setuptools
+import os
 
 install_requires = ["httpx[http2]>=0.18"]
 test_requires = [
     "pytest",
 ]
 
+version = os.environ.get("JELASTIC_CLIENT_VERSION", "0.0.0")
+
+print(f"jelastic-client version '{version}'")
+
 setuptools.setup(
     name="jelastic_client",
-    version="0.0.2",
+    version=version,
     author="Laurent Michel",
     author_email="softozor@gmail.com",
     description="A jelastic client library to be used in the softozor projects",
