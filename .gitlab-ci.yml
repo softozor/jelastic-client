@@ -1,13 +1,13 @@
 stages:
-- lint
-- test
-- publish
+  - lint
+  - test
+  - publish
 
 lint:
   stage: lint
   image: softozor/python-lint:$TOOLS_SHA
   script:
-  - autopep8 -rd . --exit-code
+    - autopep8 -rd . --exit-code
 
 test:
   stage: test
@@ -15,10 +15,10 @@ test:
   variables:
     PYTHONPATH: $CI_PROJECT_DIR
   script:
-  -|
+    -|
     pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
-      --api-url $JELASTIC_API_URL \
-      --api-token $JELASTIC_ACCESS_TOKEN
+    --api-url $JELASTIC_API_URL \
+    --api-token $JELASTIC_ACCESS_TOKEN
   artifacts:
     reports:
       junit:
@@ -32,7 +32,7 @@ publish:
   variables:
     PACKAGE_NAME: jelastic-client
   before_script:
-  - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi)
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi)
   script:
-  - python3 setup.py sdist bdist_wheel
-  - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
+    - python3 setup.py sdist bdist_wheel
+    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
