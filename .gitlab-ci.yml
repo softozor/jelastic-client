@@ -14,6 +14,8 @@ test:
   image: softozor/python-tests:$TOOLS_SHA
   variables:
     PYTHONPATH: $CI_PROJECT_DIR
+  before_script:
+    - python setup.py install
   script:
     - |
       pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
