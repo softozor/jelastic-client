@@ -14,17 +14,8 @@ class ApiClient:
         self.api_url = api_url
         self.api_data = {"session": api_token}
         self.logger = logging.getLogger(self.__class__.__name__)
-        # the Jelastic api is _synchronous_ => no timeouts
+        # the jelastic api is _synchronous_ => no timeouts
         self.client = httpx.Client(timeout=None)
-
-    def is_functional(self) -> bool:
-        """
-        Whether this was meaningfully instantiated
-        """
-        try:
-            return len(self.api_url) > 0 and len(self.api_data["session"]) > 0
-        except (TypeError, AttributeError):
-            return False
 
     def _apicall(self, uri: str, method: str = "get", data: dict = {}) -> Dict:
         """

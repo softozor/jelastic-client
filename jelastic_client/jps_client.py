@@ -1,7 +1,10 @@
+from .core import ApiClient
+
+
 class JpsClient:
 
-    def __init__(self):
-        self.value = 2
+    def __init__(self, api_client: ApiClient):
+        self.api_client = api_client
 
-    def install(self):
-        print('install: ', self.value)
+    def install(self) -> None:
+        print('install')
