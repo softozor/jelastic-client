@@ -7,7 +7,7 @@ test_requires = [
 
 setuptools.setup(
     name="jelastic_client",
-    version="0.0.1",
+    version="0.0.2",
     author="Laurent Michel",
     author_email="softozor@gmail.com",
     description="A jelastic client library to be used in the softozor projects",

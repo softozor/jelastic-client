@@ -20,6 +20,7 @@ publish:
   before_script:
   - export VERSION=`bump`
   - echo "version ${VERSION}"
+  # TODO: of course the bumped version needs to be pushed to git
   script:
   - python3 setup.py sdist bdist_wheel
   - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
