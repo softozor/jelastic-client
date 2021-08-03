@@ -8,8 +8,6 @@ test_requires = [
 
 version = os.environ.get("JELASTIC_CLIENT_VERSION", "0.0.0")
 
-print(f"jelastic-client version '{version}'")
-
 setuptools.setup(
     name="jelastic_client",
     version=version,

@@ -1,5 +1,6 @@
 stages:
 - lint
+- test
 - publish
 
 lint:
@@ -8,11 +9,22 @@ lint:
   script:
   - autopep8 -rd . --exit-code
 
-# TODO: we need to roughly test this wrapper
-# to do so, use
-# - api_url = https://app.hidora.com/1.0/
-# - api_token = some api token generated for the sake of testing
-# first test will be to install a jps and see that the environment has been created (+ in tear down of course delete the environment)
+test:
+  stage: test
+  image: softozor/python-tests:$TOOLS_SHA
+  variables:
+    PYTHONPATH: $CI_PROJECT_DIR
+  script:
+  -|
+    pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
+      --api-url $JELASTIC_API_URL \
+      --api-token $JELASTIC_ACCESS_TOKEN
+  artifacts:
+    reports:
+      junit:
+        - $CI_PROJECT_DIR/test-reports/*.xml
+    paths:
+      - $CI_PROJECT_DIR/test-reports
 
 publish:
   stage: publish
@@ -21,7 +33,6 @@ publish:
     PACKAGE_NAME: jelastic-client
   before_script:
   - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi)
-  - echo "version ${JELASTIC_CLIENT_VERSION}"
   script:
   - python3 setup.py sdist bdist_wheel
   - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
