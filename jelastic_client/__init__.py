@@ -8,9 +8,9 @@ def is_valid_api_client():
     from .core import ApiClient
 
     return isinstance(_api_client, ApiClient) \
-           and _api_client.is_functional() \
-           and _api_client.api_url == settings.api_url \
-           and _api_client.api_token == settings.api_token
+        and _api_client.is_functional() \
+        and _api_client.api_url == settings.api_url \
+        and _api_client.api_token == settings.api_token
 
 
 def define_api_client():
