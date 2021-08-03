@@ -16,7 +16,8 @@ def is_valid_api_client():
 def define_api_client():
     from .core import ApiClient
 
-    _api_client = ApiClient(api_url=settings.api_url, api_token=settings.api_token)
+    _api_client = ApiClient(api_url=settings.api_url,
+                            api_token=settings.api_token)
 
     return _api_client
 
