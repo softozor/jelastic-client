@@ -15,10 +15,10 @@ test:
   variables:
     PYTHONPATH: $CI_PROJECT_DIR
   script:
-    -|
-    pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
-    --api-url $JELASTIC_API_URL \
-    --api-token $JELASTIC_ACCESS_TOKEN
+    - |
+      pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
+      --api-url $JELASTIC_API_URL \
+      --api-token $JELASTIC_ACCESS_TOKEN
   artifacts:
     reports:
       junit:
