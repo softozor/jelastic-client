@@ -17,14 +17,15 @@ class ApiClient:
         # the jelastic api is _synchronous_ => no timeouts
         self.client = httpx.Client(timeout=None)
 
-    def _apicall(self, uri: str, method: str = "get", data: dict = {}) -> Dict:
+    def _apicall(self, uri: str, method: str, data: dict = {}) -> Dict:
         """
         Lowest-level API call: that's the method that talks over the network to the Jelastic API
         """
         self.logger.debug(f"_apicall {method.upper()} {uri}, data:{data}")
         data.update(self.api_data)
         r = self.client.request(
-            method=method, url=f"{self.api_url}{uri}", data=data
+            # TODO: use some kind of urljoin here to avoid problems with slashes
+            method=method, url=f"{self.api_url}/{uri}", data=data
         )
         if r.status_code != httpx.codes.OK:
             raise ApiClientException(

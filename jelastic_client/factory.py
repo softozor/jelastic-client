@@ -1,7 +1,8 @@
+import logging
+
+from .control_client import ControlClient
 from .core import ApiClient
 from .jps_client import JpsClient
-
-import logging
 
 
 class JelasticClientFactory:
@@ -12,3 +13,7 @@ class JelasticClientFactory:
     def create_jps_client(self) -> "JpsClient":
         self.logger.debug("creating JpsClient")
         return JpsClient(self.api_client)
+
+    def create_control_client(self) -> "ControlClient":
+        self.logger.debug("creating ControlClient")
+        return ControlClient(self.api_client)

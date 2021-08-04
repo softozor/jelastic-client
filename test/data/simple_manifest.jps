@@ -1,0 +1,8 @@
+type: install
+name: Simple Test Manifest
+
+nodes:
+  count: 1
+  cloudlets: 4
+  nodeGroup: cp
+  image: alpine:latest

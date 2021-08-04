@@ -16,11 +16,13 @@ test:
     PYTHONPATH: $CI_PROJECT_DIR
   before_script:
     - python setup.py install
+    - cd test
   script:
     - |
       pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
       --api-url $JELASTIC_API_URL \
-      --api-token $JELASTIC_ACCESS_TOKEN
+      --api-token $JELASTIC_ACCESS_TOKEN \
+      --test-data-dir ./data
   artifacts:
     reports:
       junit:
