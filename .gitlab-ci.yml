@@ -61,6 +61,6 @@ publish-pypi:
   only:
     refs:
       - master
-#    changes:
-#      - jelastic_client/**/*
-#      - setup.py
+    changes:
+      - jelastic_client/**/*
+      - setup.py

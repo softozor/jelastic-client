@@ -14,6 +14,8 @@ setuptools.setup(
     author="Laurent Michel",
     author_email="softozor@gmail.com",
     description="A jelastic client library to be used in the softozor projects",
+    long_description=open("README.md").read(),
+    long_description_content_type="text/markdown",
     url="https://gitlab.hidora.com/softozor/jelastic-client",
     packages=setuptools.find_packages(),
     install_requires=install_requires,
