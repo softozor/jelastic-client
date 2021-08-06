@@ -4,7 +4,6 @@ from typing import Dict
 import httpx
 
 from .exceptions import ApiClientException
-from urllib.parse import urljoin
 
 
 class ApiClient:
@@ -25,7 +24,7 @@ class ApiClient:
         self.logger.debug(f"_apicall {method.upper()} {uri}, data:{data}")
         data.update(self.api_data)
         r = self.client.request(
-            method=method, url=urljoin(self.api_url, uri), data=data
+            method=method, url=f"{self.api_url}/{uri}", data=data
         )
         if r.status_code != httpx.codes.OK:
             raise ApiClientException(
