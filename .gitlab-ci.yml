@@ -23,7 +23,8 @@ test:
         -n 4 \
         --api-url $JELASTIC_API_URL \
         --api-token $JELASTIC_ACCESS_TOKEN \
-        --test-data-dir ./data
+        --test-data-dir ./data \
+        --jelastic-version $JELASTIC_VERSION
   artifacts:
     reports:
       junit:

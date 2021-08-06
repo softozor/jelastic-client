@@ -17,8 +17,6 @@ pip3 install jelastic-client
 
 # Usage
 
-Assuming you 
-
 ```python
 import jelastic_client
 

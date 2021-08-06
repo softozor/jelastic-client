@@ -20,3 +20,14 @@ class JpsClient(BaseClient):
             if not success_response(response):
                 raise JelasticClientException(
                     f"installation of manifest {filename} failed", response)
+
+    def get_engine_version(self) -> str:
+        response = self.execute(
+            "GetEngineVersion"
+        )
+
+        if not success_response(response):
+            raise JelasticClientException(
+                f"getting engine version failed", response)
+
+        return response["version"]

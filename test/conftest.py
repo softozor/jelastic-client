@@ -16,6 +16,9 @@ def pytest_addoption(parser):
     parser.addoption(
         "--test-data-dir", action="store", default="./data", help="path to test data folder"
     )
+    parser.addoption(
+        "--jelastic-version", action="store", required=True, help="supported jelastic version"
+    )
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -39,6 +42,11 @@ def test_data_dir(request):
 
 
 @pytest.fixture
+def supported_jelastic_version(request):
+    return request.config.getoption("--jelastic-version")
+
+
+@pytest.fixture
 def client_factory(api_url, api_token):
     return jelastic_client.JelasticClientFactory(api_url, api_token)
 
@@ -59,3 +67,8 @@ def new_env_name(control_client):
     yield env_name
     if control_client.env_exists(env_name):
         control_client.delete_env(env_name)
+
+
+@pytest.fixture
+def non_existent_env_name():
+    return "non-existent-env"
