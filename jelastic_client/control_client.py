@@ -35,7 +35,8 @@ class ControlClient(BaseClient):
         )
 
         if not success_response(response):
-            raise JelasticClientException(f"deletion of environment {env_name} failed", response)
+            raise JelasticClientException(
+                f"deletion of environment {env_name} failed", response)
 
     def get_env_info(self, env_name: str) -> Dict:
         try:

@@ -18,4 +18,5 @@ class JpsClient(BaseClient):
             )
 
             if not success_response(response):
-                raise JelasticClientException(f"installation of manifest {filename} failed", response)
+                raise JelasticClientException(
+                    f"installation of manifest {filename} failed", response)
