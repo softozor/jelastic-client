@@ -1,9 +1,14 @@
-import setuptools
 import os
 
-install_requires = ["httpx[http2]>=0.18"]
+import setuptools
+
+install_requires = [
+    "httpx[http2]>=0.18",
+]
+
 test_requires = [
     "pytest",
+    "pytest-xdist"
 ]
 
 version = os.environ.get("JELASTIC_CLIENT_VERSION", "0.0.0")

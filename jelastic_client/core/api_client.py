@@ -35,7 +35,7 @@ class ApiClient:
         response = r.json()
         if response["result"] != 0:
             raise ApiClientException(
-                f"{method} to {uri} returned non-zero result: {response}"
+                f"{method} to {uri} returned non-zero result", response
             )
         self.logger.debug(f"response : {response}")
         return response

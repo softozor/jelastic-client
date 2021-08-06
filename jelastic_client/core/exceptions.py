@@ -1,9 +1,14 @@
+from typing import Dict
+
+
 class JelasticClientException(Exception):
     """
     Generic Jelastic Client Exception
     """
 
-    pass
+    def __init__(self, message: str, response: Dict):
+        super().__init__(message)
+        self.response = response
 
 
 class ApiClientException(JelasticClientException):
@@ -11,4 +16,5 @@ class ApiClientException(JelasticClientException):
     Low-level API Exception
     """
 
-    pass
+    def __init__(self, message: str, response: Dict):
+        super().__init__(message, response)

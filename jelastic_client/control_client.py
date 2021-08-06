@@ -1,24 +1,65 @@
-import logging
+from enum import Enum
 from typing import Dict
 
-from .core import ApiClient
+from .core import ApiClient, BaseClient, JelasticClientException, success_response, ApiClientException
 
 
-class ControlClient:
+class Status(Enum):
+    Running = 1
+    Down = 2
+    Launching = 3
+    Sleep = 4
+    Unknown = 5
+    Creating = 6
+    Cloning = 7
+    NotExists = 8
+    Exporting = 9
+    Migrating = 10
+    Broken = 11
+    Updating = 12
+    Stopping = 13
+    GoingToSleep = 14
+    Restoring = 15
+
+
+class ControlClient(BaseClient):
+    grp_cls = "environment.control"
 
     def __init__(self, api_client: ApiClient):
-        self.api_client = api_client
-        self.logger = logging.getLogger(self.__class__.__name__)
-        self.grp_cls = "environment.control"
+        super().__init__(api_client)
 
-    def delete_env(self, env_name: str) -> Dict:
-        response = self.api_client.execute(
-            self._fnc("deleteenv"),
+    def delete_env(self, env_name: str) -> None:
+        response = self.execute(
+            "DeleteEnv",
             envName=env_name
         )
 
-        return response
+        if not success_response(response):
+            raise JelasticClientException(f"deletion of environment {env_name} failed", response)
 
-    # TODO: this should be part of an abstract JelasticClient
-    def _fnc(self, fnc_name: str):
-        return f"{self.grp_cls}.{fnc_name}"
+    def get_env_info(self, env_name: str) -> Dict:
+        try:
+            response = self.execute(
+                "GetEnvInfo",
+                envName=env_name
+            )
+            return response
+        except ApiClientException as e:
+            return {
+                "result": e.response["result"],
+                "env": {
+                    "status": Status.NotExists
+                }
+            }
+
+    def env_is_running(self, env_name: str) -> bool:
+        env_info = self.get_env_info(env_name)
+        env_status = Status(env_info["env"]["status"])
+
+        return env_status == Status.Running
+
+    def env_exists(self, env_name: str) -> bool:
+        env_info = self.get_env_info(env_name)
+        env_status = Status(env_info["env"]["status"])
+
+        return env_status is not Status.NotExists and env_status is not Status.Unknown

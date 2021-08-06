@@ -57,6 +57,5 @@ def control_client(client_factory):
 def new_env_name(control_client):
     env_name = random_env_name()
     yield env_name
-    # TODO: we should check that the environment exists
-    control_client.delete_env(env_name)
-    # TODO: we should check that the environment deletion was successful
+    if control_client.env_exists(env_name):
+        control_client.delete_env(env_name)
