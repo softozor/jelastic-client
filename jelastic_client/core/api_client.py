@@ -24,7 +24,7 @@ class ApiClient:
         self.logger.debug(f"_apicall {method.upper()} {uri}, data:{data}")
         data.update(self.api_data)
         r = self.client.request(
-            method=method, url=f"{self.api_url}/{uri}", data=data
+            method=method, url=f"{self.api_url.strip('/')}/{uri}", data=data
         )
         if r.status_code != httpx.codes.OK:
             raise ApiClientException(

@@ -20,6 +20,7 @@ test:
   script:
     - |
       pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
+        -n 4 \
         --api-url $JELASTIC_API_URL \
         --api-token $JELASTIC_ACCESS_TOKEN \
         --test-data-dir ./data \
@@ -41,7 +42,7 @@ publish:
   script:
     - python3 setup.py sdist bdist_wheel
     - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/*
-#    - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=${PYPI_API_USERNAME} python -m twine upload dist/*
+    - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=${PYPI_API_USERNAME} python -m twine upload dist/*
   only:
     refs:
       - master
