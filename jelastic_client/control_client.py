@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
 
-from .core import ApiClient, BaseClient, JelasticClientException, success_response, ApiClientException
+from .core import ApiClient, BaseClient, ApiClientException
 
 
 class Status(Enum):
@@ -29,14 +29,10 @@ class ControlClient(BaseClient):
         super().__init__(api_client)
 
     def delete_env(self, env_name: str) -> None:
-        response = self.execute(
+        self.execute(
             "DeleteEnv",
             envName=env_name
         )
-
-        if not success_response(response):
-            raise JelasticClientException(
-                f"deletion of environment {env_name} failed", response)
 
     def get_env_info(self, env_name: str) -> Dict:
         try:

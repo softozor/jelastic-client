@@ -1,4 +1,4 @@
-from .core import ApiClient, BaseClient, JelasticClientException, success_response
+from .core import ApiClient, BaseClient
 
 
 class JpsClient(BaseClient):
@@ -11,23 +11,15 @@ class JpsClient(BaseClient):
         with open(filename) as file:
             manifest_content = file.read()
 
-            response = self.execute(
+            self.execute(
                 "Install",
                 jps=manifest_content,
                 envName=env_name
             )
 
-            if not success_response(response):
-                raise JelasticClientException(
-                    f"installation of manifest {filename} failed", response)
-
     def get_engine_version(self) -> str:
         response = self.execute(
             "GetEngineVersion"
         )
-
-        if not success_response(response):
-            raise JelasticClientException(
-                f"getting engine version failed", response)
 
         return response["version"]

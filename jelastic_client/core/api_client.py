@@ -6,6 +6,20 @@ import httpx
 from .exceptions import ApiClientException
 
 
+def compute_function_endpoint(two_dotted_function_name: str):
+    uri_chunks = two_dotted_function_name.split(".")
+    if len(uri_chunks) != 3:
+        raise ApiClientException(
+            f"Function ({two_dotted_function_name}) doesn't match standard Jelastic function (Group.Class.Function)"
+        )
+    grp = uri_chunks[0]
+    cls = uri_chunks[1]
+    fnc = uri_chunks[2]
+    uri = f"{grp}/{cls}/REST/{fnc}".lower()
+
+    return uri
+
+
 class ApiClient:
     def __init__(self, api_url: str, api_token: str):
         """
@@ -45,15 +59,6 @@ class ApiClient:
             api_client.execute('Environment.Control.GetEnvs')
         """
         self.logger.info(f"{function}({kwargs})")
-        # Determine function endpoint from the two-dotted string
-        uri_chunks = function.split(".")
-        if len(uri_chunks) != 3:
-            raise ApiClientException(
-                f"Function ({function}) doesn't match standard Jelastic function (Group.Class.Function)"
-            )
-        grp = uri_chunks[0]
-        cls = uri_chunks[1]
-        fnc = uri_chunks[2]
-        uri = f"{grp}/{cls}/REST/{fnc}".lower()
+        uri = compute_function_endpoint(function)
 
         return self._apicall(uri=uri, method="post", data=kwargs)

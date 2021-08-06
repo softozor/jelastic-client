@@ -1,5 +1,3 @@
-import random
-
 import pytest
 
 import jelastic_client
@@ -19,6 +17,7 @@ def pytest_addoption(parser):
     parser.addoption(
         "--jelastic-version", action="store", required=True, help="supported jelastic version"
     )
+
 
 # we don't random.seed here because otherwise we would not be able to run concurrent pipelines
 # as concurrent pipeline would concurrently create environments with the same names
