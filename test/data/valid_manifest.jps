@@ -6,3 +6,4 @@ nodes:
   cloudlets: 4
   nodeGroup: cp
   image: alpine:latest
+skipNodeEmails: true
