@@ -20,10 +20,8 @@ def pytest_addoption(parser):
         "--jelastic-version", action="store", required=True, help="supported jelastic version"
     )
 
-
-@pytest.fixture(autouse=True, scope="session")
-def random_seed():
-    random.seed('jelastic-client')
+# we don't random.seed here because otherwise we would not be able to run concurrent pipelines
+# as concurrent pipeline would concurrently create environments with the same names
 
 
 @pytest.fixture
@@ -64,6 +62,8 @@ def control_client(client_factory):
 @pytest.fixture
 def new_env_name(control_client):
     env_name = random_env_name()
+    while control_client.env_exists(env_name):
+        env_name = random_env_name()
     yield env_name
     if control_client.env_exists(env_name):
         control_client.delete_env(env_name)

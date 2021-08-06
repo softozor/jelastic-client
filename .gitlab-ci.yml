@@ -20,6 +20,7 @@ test:
   script:
     - |
       pytest -p no:cacheprovider -ra -vv --junitxml=$CI_PROJECT_DIR/test-reports/test-report.xml \
+        -n 4 \
         --api-url $JELASTIC_API_URL \
         --api-token $JELASTIC_ACCESS_TOKEN \
         --test-data-dir ./data \
