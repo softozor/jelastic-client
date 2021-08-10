@@ -16,7 +16,12 @@ class BaseClient(ABC):
 
     @property
     @abstractmethod
-    def grp_cls(self):
+    def jelastic_group(self):
+        raise NotImplementedError
+
+    @property
+    @abstractmethod
+    def jelastic_class(self):
         raise NotImplementedError
 
     def execute(self, fnc: str, **kwargs) -> Dict:
@@ -33,4 +38,4 @@ class BaseClient(ABC):
         return response
 
     def _fnc(self, fnc_name: str):
-        return f"{self.grp_cls}.{fnc_name}"
+        return f"{self.jelastic_group}.{self.jelastic_class}.{fnc_name}"

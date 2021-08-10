@@ -2,7 +2,9 @@ from .core import ApiClient, BaseClient
 
 
 class JpsClient(BaseClient):
-    grp_cls = "marketplace.jps"
+    jelastic_group = "marketplace"
+
+    jelastic_class = "jps"
 
     def __init__(self, api_client: ApiClient):
         super().__init__(api_client)

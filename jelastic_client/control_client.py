@@ -23,7 +23,9 @@ class Status(Enum):
 
 
 class ControlClient(BaseClient):
-    grp_cls = "environment.control"
+    jelastic_group = "environment"
+
+    jelastic_class = "control"
 
     def __init__(self, api_client: ApiClient):
         super().__init__(api_client)
