@@ -1,7 +1,11 @@
+import random
+
 import pytest
+from _pytest.fixtures import FixtureRequest
 
 import jelastic_client
-from random_helpers import random_env_name
+from jelastic_client import JelasticClientFactory, JpsClient, ControlClient
+from test_utils import get_new_random_env_name
 
 
 def pytest_addoption(parser):
@@ -17,57 +21,64 @@ def pytest_addoption(parser):
     parser.addoption(
         "--jelastic-version", action="store", required=True, help="supported jelastic version"
     )
+    parser.addoption(
+        "--commit-sha", action="store", required=True, help="commit short sha (8 characters)"
+    )
 
 
-# we don't random.seed here because otherwise we would not be able to run concurrent pipelines
-# as concurrent pipeline would concurrently create environments with the same names
+@pytest.fixture(autouse=True, scope="session")
+def random_seed() -> None:
+    random.seed("jelastic-client-integration-tests")
 
 
 @pytest.fixture
-def api_url(request):
+def api_url(request: FixtureRequest) -> str:
     return request.config.getoption("--api-url")
 
 
 @pytest.fixture
-def api_token(request):
+def api_token(request: FixtureRequest) -> str:
     return request.config.getoption("--api-token")
 
 
 @pytest.fixture
-def test_data_dir(request):
+def test_data_dir(request: FixtureRequest) -> str:
     return request.config.getoption("--test-data-dir")
 
 
 @pytest.fixture
-def supported_jelastic_version(request):
+def supported_jelastic_version(request: FixtureRequest) -> str:
     return request.config.getoption("--jelastic-version")
 
 
 @pytest.fixture
-def client_factory(api_url, api_token):
+def commit_sha(request: FixtureRequest) -> str:
+    return request.config.getoption("--commit-sha")
+
+
+@pytest.fixture
+def client_factory(api_url: str, api_token: str) -> JelasticClientFactory:
     return jelastic_client.JelasticClientFactory(api_url, api_token)
 
 
 @pytest.fixture
-def jps_client(client_factory):
+def jps_client(client_factory: JelasticClientFactory) -> JpsClient:
     return client_factory.create_jps_client()
 
 
 @pytest.fixture
-def control_client(client_factory):
+def control_client(client_factory: JelasticClientFactory) -> ControlClient:
     return client_factory.create_control_client()
 
 
 @pytest.fixture
-def new_env_name(control_client):
-    env_name = random_env_name()
-    while control_client.env_exists(env_name):
-        env_name = random_env_name()
+def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str) -> str:
+    env_name = get_new_random_env_name(control_client, commit_sha, worker_id)
     yield env_name
     if control_client.env_exists(env_name):
         control_client.delete_env(env_name)
 
 
 @pytest.fixture
-def non_existent_env_name():
+def non_existent_env_name() -> str:
     return "non-existent-env"
