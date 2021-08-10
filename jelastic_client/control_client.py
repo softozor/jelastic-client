@@ -1,7 +1,7 @@
 from enum import Enum
 from typing import Dict
 
-from .core import ApiClient, BaseClient, ApiClientException
+from .core import ApiClient, BaseClient, ApiClientException, who_am_i
 
 
 class Status(Enum):
@@ -32,14 +32,14 @@ class ControlClient(BaseClient):
 
     def delete_env(self, env_name: str) -> None:
         self.execute(
-            "DeleteEnv",
+            who_am_i(),
             envName=env_name
         )
 
     def get_env_info(self, env_name: str) -> Dict:
         try:
             response = self.execute(
-                "GetEnvInfo",
+                who_am_i(),
                 envName=env_name
             )
             return response

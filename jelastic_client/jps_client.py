@@ -1,4 +1,4 @@
-from .core import ApiClient, BaseClient
+from .core import ApiClient, BaseClient, who_am_i
 
 
 class JpsClient(BaseClient):
@@ -14,14 +14,14 @@ class JpsClient(BaseClient):
             manifest_content = file.read()
 
             self.execute(
-                "Install",
+                who_am_i(),
                 jps=manifest_content,
                 envName=env_name
             )
 
     def get_engine_version(self) -> str:
         response = self.execute(
-            "GetEngineVersion"
+            who_am_i()
         )
 
         return response["version"]
