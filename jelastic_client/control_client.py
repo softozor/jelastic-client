@@ -1,7 +1,11 @@
 from enum import Enum
 from typing import Dict
 
+import simplejson as json
+
 from .core import ApiClient, BaseClient, ApiClientException, who_am_i
+from .env_node import EnvNodes
+from .env_settings import EnvSettings
 
 
 class Status(Enum):
@@ -29,6 +33,12 @@ class ControlClient(BaseClient):
 
     def __init__(self, api_client: ApiClient):
         super().__init__(api_client)
+
+    def create_environment(self, env: EnvSettings, nodes: EnvNodes) -> str:
+        env_json = json.dumps(env)
+        nodes_json = json.dumps(nodes)
+        response = self.execute(who_am_i(), env=env_json, nodes=nodes_json)
+        return response["response"]["env"]["envName"]
 
     def delete_env(self, env_name: str) -> None:
         self.execute(
