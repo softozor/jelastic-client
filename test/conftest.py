@@ -1,10 +1,14 @@
+from __future__ import annotations
+
+import os
 import random
 
 import pytest
 from _pytest.fixtures import FixtureRequest
 
 import jelastic_client
-from jelastic_client import JelasticClientFactory, JpsClient, ControlClient
+from jelastic_client import JelasticClientFactory, JpsClient, ControlClient, FileClient, EnvSettings, DockerSettings, \
+    EnvNode
 from test_utils import get_new_random_env_name
 
 
@@ -72,6 +76,11 @@ def control_client(client_factory: JelasticClientFactory) -> ControlClient:
 
 
 @pytest.fixture
+def file_client(client_factory: JelasticClientFactory) -> FileClient:
+    return client_factory.create_file_client()
+
+
+@pytest.fixture
 def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str) -> str:
     env_name = get_new_random_env_name(control_client, commit_sha, worker_id)
     yield env_name
@@ -82,3 +91,19 @@ def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str)
 @pytest.fixture
 def non_existent_env_name() -> str:
     return "non-existent-env"
+
+
+@pytest.fixture
+def alpine_with_file(control_client: ControlClient, new_env_name: str) -> tuple[str, str]:
+    env = EnvSettings(shortdomain=new_env_name)
+    docker_settings = DockerSettings(image="softozor/alpine-with-file:latest")
+    node = EnvNode(docker=docker_settings,
+                   flexibleCloudlets=4, nodeType="docker")
+    control_client.create_environment(env, [node])
+    return new_env_name, "/app/file.txt"
+
+
+@pytest.fixture
+def expected_file_content_in_alpine_with_file() -> str:
+    with open(os.path.join("./docker", "alpine-with-file", "file.txt"), "r") as file:
+        return file.read()

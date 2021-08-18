@@ -1,5 +1,6 @@
 stages:
   - lint
+  - fixtures
   - test
   - publish
 
@@ -8,6 +9,19 @@ lint:
   image: softozor/python-lint:$TOOLS_SHA
   script:
     - autopep8 -rd . --exit-code
+
+publish-alpine-with-file:
+  stage: fixtures
+  image: docker:latest
+  variables:
+    DOCKER_IMAGE: softozor/alpine-with-file
+    DOCKERFILE_FOLDER: ./test/docker/alpine-with-file
+  before_script:
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker build $DOCKERFILE_FOLDER -t $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA -t $DOCKER_IMAGE:latest
+    - docker push $DOCKER_IMAGE:$CI_COMMIT_SHORT_SHA
+    - docker push $DOCKER_IMAGE:latest
 
 test:
   stage: test

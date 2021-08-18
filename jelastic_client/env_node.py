@@ -11,8 +11,8 @@ class EnvNode(NamedTuple):
     count: int = 1
     displayName: str = None
     extip: bool = False
-    fixedCloudlets: int = 1
-    flexibleCloudlets: int = 1
+    fixedCloudlets: int = None
+    flexibleCloudlets: int = None
     nodeType: str = None
 
 
