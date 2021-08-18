@@ -37,18 +37,18 @@ class ControlClient(BaseClient):
     def create_environment(self, env: EnvSettings, nodes: EnvNodes) -> str:
         env_json = json.dumps(env)
         nodes_json = json.dumps(nodes)
-        response = self.execute(who_am_i(), env=env_json, nodes=nodes_json)
+        response = self._execute(who_am_i(), env=env_json, nodes=nodes_json)
         return response["response"]["env"]["envName"]
 
     def delete_env(self, env_name: str) -> None:
-        self.execute(
+        self._execute(
             who_am_i(),
             envName=env_name
         )
 
     def get_env_info(self, env_name: str) -> Dict:
         try:
-            response = self.execute(
+            response = self._execute(
                 who_am_i(),
                 envName=env_name
             )

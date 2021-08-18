@@ -12,7 +12,7 @@ def success_response(response: Dict) -> bool:
 class BaseClient(ABC):
 
     def __init__(self, api_client: ApiClient):
-        self.api_client = api_client
+        self._api_client = api_client
 
     @property
     @abstractmethod
@@ -24,9 +24,9 @@ class BaseClient(ABC):
     def jelastic_class(self):
         raise NotImplementedError
 
-    def execute(self, fnc: str, **kwargs) -> Dict:
+    def _execute(self, fnc: str, **kwargs) -> Dict:
         two_dotted_function_name = self._fnc(fnc)
-        response = self.api_client.execute(
+        response = self._api_client.execute(
             two_dotted_function_name,
             **kwargs
         )

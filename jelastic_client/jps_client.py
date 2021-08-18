@@ -13,14 +13,14 @@ class JpsClient(BaseClient):
         with open(filename) as file:
             manifest_content = file.read()
 
-            self.execute(
+            self._execute(
                 who_am_i(),
                 jps=manifest_content,
                 envName=env_name
             )
 
     def get_engine_version(self) -> str:
-        response = self.execute(
+        response = self._execute(
             who_am_i()
         )
 
