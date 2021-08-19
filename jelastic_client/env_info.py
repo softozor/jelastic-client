@@ -1,10 +1,8 @@
-from typing import Dict
-
 from jelastic_client.env_status import EnvStatus
 from jelastic_client.node import Node, Nodes
 
 
-def get_nodes_from_env_info(env_info: Dict) -> Nodes:
+def get_nodes_from_env_info(env_info: dict) -> Nodes:
     nodes = []
     raw_nodes = env_info["nodes"] if hasattr(
         env_info, "nodes") and env_info["nodes"] is not None else []
@@ -17,7 +15,7 @@ def get_nodes_from_env_info(env_info: Dict) -> Nodes:
 
 class EnvInfo:
 
-    def __init__(self, env_info: Dict):
+    def __init__(self, env_info: dict):
         self._info = env_info
         self._nodes = get_nodes_from_env_info(env_info)
 
@@ -42,7 +40,6 @@ class EnvInfo:
     # - given a nodeGroup, fetch the related IPs
     # - given a nodeType, fetch the related IPs
     # - give a nodeType AND a nodeGroup, fetch the related IPs
-    # TODO: use multipledispatch
     def get_node_ips(self, node_group: str = None, node_type: str = None) -> list[str]:
         env_nodes = self._nodes
 

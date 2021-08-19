@@ -4,7 +4,7 @@ import setuptools
 
 install_requires = [
     "httpx[http2]>=0.18",
-    "simplejson"
+    "simplejson",
 ]
 
 test_requires = [

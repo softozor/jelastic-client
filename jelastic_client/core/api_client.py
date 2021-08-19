@@ -1,5 +1,4 @@
 import logging
-from typing import Dict
 
 import httpx
 
@@ -31,7 +30,7 @@ class ApiClient:
         # the jelastic api is _synchronous_ => no timeouts
         self.client = httpx.Client(timeout=None)
 
-    def _apicall(self, uri: str, method: str, data: dict = {}) -> Dict:
+    def _apicall(self, uri: str, method: str, data: dict = {}) -> dict:
         """
         Lowest-level API call: that's the method that talks over the network to the Jelastic API
         """
@@ -53,7 +52,7 @@ class ApiClient:
         self.logger.debug(f"response : {response}")
         return response
 
-    def execute(self, function: str, **kwargs) -> Dict:
+    def execute(self, function: str, **kwargs) -> dict:
         """
         Direct API call, converting function paths into URLs; allows:
             api_client.execute('Environment.Control.GetEnvs')

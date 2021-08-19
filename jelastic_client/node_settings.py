@@ -1,4 +1,4 @@
-from typing import NamedTuple, List
+from typing import NamedTuple
 
 
 class DockerSettings(NamedTuple):
@@ -16,4 +16,4 @@ class NodeSettings(NamedTuple):
     nodeType: str = None
 
 
-MultipleNodeSettings = List[NodeSettings]
+MultipleNodeSettings = list[NodeSettings]

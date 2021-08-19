@@ -18,7 +18,8 @@ def test_jps_client_install_valid_manifest_creates_environment(
     jps_client.install(filename, new_env_name)
 
     # Assert
-    assert control_client.env_exists(new_env_name)
+    env_info = control_client.get_env_info(new_env_name)
+    assert env_info.exists()
 
 
 def test_jps_client_install_valid_manifest_makes_environment_run(
@@ -33,7 +34,8 @@ def test_jps_client_install_valid_manifest_makes_environment_run(
     jps_client.install(filename, new_env_name)
 
     # Assert
-    assert control_client.env_is_running(new_env_name)
+    env_info = control_client.get_env_info(new_env_name)
+    assert env_info.is_running()
 
 
 def test_jps_client_install_invalid_manifest_raises_exception(

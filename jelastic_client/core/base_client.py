@@ -1,11 +1,10 @@
 from abc import ABC, abstractmethod
-from typing import Dict
 
 from .api_client import ApiClient
 from .exceptions import JelasticClientException
 
 
-def success_response(response: Dict) -> bool:
+def success_response(response: dict) -> bool:
     return response["result"] == 0
 
 
@@ -24,7 +23,7 @@ class BaseClient(ABC):
     def jelastic_class(self):
         raise NotImplementedError
 
-    def _execute(self, fnc: str, **kwargs) -> Dict:
+    def _execute(self, fnc: str, **kwargs) -> dict:
         two_dotted_function_name = self._fnc(fnc)
         response = self._api_client.execute(
             two_dotted_function_name,
