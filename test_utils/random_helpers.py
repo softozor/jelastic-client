@@ -11,6 +11,6 @@ def create_random_env_name(commit_sha: str, worker_id: str) -> str:
 
 def get_new_random_env_name(control_client: ControlClient, commit_sha: str, worker_id: str) -> str:
     env_name = create_random_env_name(commit_sha, worker_id)
-    while control_client.env_exists(env_name):
+    while control_client.get_env_info(env_name).exists():
         env_name = create_random_env_name(commit_sha, worker_id)
     return env_name

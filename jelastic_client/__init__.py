@@ -1,5 +1,5 @@
 from .control_client import ControlClient
-from .env_node import NodeSettings, DockerSettings
+from .node_settings import NodeSettings, DockerSettings
 from .env_settings import EnvSettings
 from .factory import JelasticClientFactory
 from .file_client import FileClient

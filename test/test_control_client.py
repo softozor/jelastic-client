@@ -27,11 +27,13 @@ def test_control_client_create_environment_with_single_vps_node_runs_environment
     node = NodeSettings(flexibleCloudlets=4, nodeType="ubuntu-vps")
 
     # Act
-    actual_env_name = control_client.create_environment(env, [node])
+    created_env_info = control_client.create_environment(env, [node])
 
     # Assert
+    actual_env_name = created_env_info.env_name()
     assert new_env_name == actual_env_name
-    assert control_client.env_is_running(new_env_name)
+    actual_env_info = control_client.get_env_info(actual_env_name)
+    assert actual_env_info.is_running()
 
 
 def test_control_client_create_environment_with_single_sql_node_runs_environment(
@@ -44,11 +46,13 @@ def test_control_client_create_environment_with_single_sql_node_runs_environment
                         nodeType="postgresql")
 
     # Act
-    actual_env_name = control_client.create_environment(env, [node])
+    created_env_info = control_client.create_environment(env, [node])
 
     # Assert
+    actual_env_name = created_env_info.env_name()
     assert new_env_name == actual_env_name
-    assert control_client.env_is_running(new_env_name)
+    actual_env_info = control_client.get_env_info(actual_env_name)
+    assert actual_env_info.is_running()
 
 
 def test_control_client_create_environment_with_single_docker_node_runs_environment(
@@ -61,11 +65,13 @@ def test_control_client_create_environment_with_single_docker_node_runs_environm
                         flexibleCloudlets=4, nodeType="docker")
 
     # Act
-    actual_env_name = control_client.create_environment(env, [node])
+    created_env_info = control_client.create_environment(env, [node])
 
     # Assert
+    actual_env_name = created_env_info.env_name()
     assert new_env_name == actual_env_name
-    assert control_client.env_is_running(new_env_name)
+    actual_env_info = control_client.get_env_info(actual_env_name)
+    assert actual_env_info.is_running()
 
 
 def test_control_client_create_environment_with_multiple_nodes_runs_environment(
@@ -81,9 +87,11 @@ def test_control_client_create_environment_with_multiple_nodes_runs_environment(
                                flexibleCloudlets=4, nodeType="docker")
 
     # Act
-    actual_env_name = control_client.create_environment(
+    created_env_info = control_client.create_environment(
         env, [sql_node, docker_node])
 
     # Assert
+    actual_env_name = created_env_info.env_name()
     assert new_env_name == actual_env_name
-    assert control_client.env_is_running(new_env_name)
+    actual_env_info = control_client.get_env_info(actual_env_name)
+    assert actual_env_info.is_running()
