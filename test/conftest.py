@@ -5,8 +5,15 @@ import pytest
 from _pytest.fixtures import FixtureRequest
 
 import jelastic_client
-from jelastic_client import JelasticClientFactory, JpsClient, ControlClient, FileClient, EnvSettings, DockerSettings, \
-    EnvNode
+from jelastic_client import (
+    JelasticClientFactory,
+    JpsClient,
+    ControlClient,
+    FileClient,
+    EnvSettings,
+    DockerSettings,
+    NodeSettings
+)
 from test_utils import get_new_random_env_name
 
 
@@ -95,8 +102,8 @@ def non_existent_env_name() -> str:
 def alpine_with_file(control_client: ControlClient, new_env_name: str) -> tuple[str, str]:
     env = EnvSettings(shortdomain=new_env_name)
     docker_settings = DockerSettings(image="softozor/alpine-with-file:latest")
-    node = EnvNode(docker=docker_settings,
-                   flexibleCloudlets=4, nodeType="docker")
+    node = NodeSettings(docker=docker_settings,
+                        flexibleCloudlets=4, nodeType="docker")
     control_client.create_environment(env, [node])
     return new_env_name, "/app/file.txt"
 

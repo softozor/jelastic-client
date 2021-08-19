@@ -1,6 +1,11 @@
 import pytest
 
-from jelastic_client import ControlClient, EnvNode, EnvSettings, DockerSettings
+from jelastic_client import (
+    ControlClient,
+    NodeSettings,
+    EnvSettings,
+    DockerSettings
+)
 from jelastic_client.core import JelasticClientException
 
 
@@ -19,7 +24,7 @@ def test_control_client_create_environment_with_single_vps_node_runs_environment
         new_env_name: str):
     # Arrange
     env = EnvSettings(shortdomain=new_env_name)
-    node = EnvNode(flexibleCloudlets=4, nodeType="ubuntu-vps")
+    node = NodeSettings(flexibleCloudlets=4, nodeType="ubuntu-vps")
 
     # Act
     actual_env_name = control_client.create_environment(env, [node])
@@ -35,8 +40,8 @@ def test_control_client_create_environment_with_single_sql_node_runs_environment
     # Arrange
     env = EnvSettings(shortdomain=new_env_name)
     # postgres needs at least 3 cloudlets
-    node = EnvNode(fixedCloudlets=3, flexibleCloudlets=4,
-                   nodeType="postgresql")
+    node = NodeSettings(fixedCloudlets=3, flexibleCloudlets=4,
+                        nodeType="postgresql")
 
     # Act
     actual_env_name = control_client.create_environment(env, [node])
@@ -52,8 +57,8 @@ def test_control_client_create_environment_with_single_docker_node_runs_environm
     # Arrange
     env = EnvSettings(shortdomain=new_env_name)
     docker_settings = DockerSettings(image="alpine")
-    node = EnvNode(docker=docker_settings,
-                   flexibleCloudlets=4, nodeType="docker")
+    node = NodeSettings(docker=docker_settings,
+                        flexibleCloudlets=4, nodeType="docker")
 
     # Act
     actual_env_name = control_client.create_environment(env, [node])
@@ -69,11 +74,11 @@ def test_control_client_create_environment_with_multiple_nodes_runs_environment(
     # Arrange
     env = EnvSettings(shortdomain=new_env_name)
     # postgres needs at least 3 cloudlets
-    sql_node = EnvNode(fixedCloudlets=3, flexibleCloudlets=4,
-                       nodeType="postgresql")
+    sql_node = NodeSettings(fixedCloudlets=3, flexibleCloudlets=4,
+                            nodeType="postgresql")
     docker_settings = DockerSettings(image="alpine")
-    docker_node = EnvNode(docker=docker_settings,
-                          flexibleCloudlets=4, nodeType="docker")
+    docker_node = NodeSettings(docker=docker_settings,
+                               flexibleCloudlets=4, nodeType="docker")
 
     # Act
     actual_env_name = control_client.create_environment(

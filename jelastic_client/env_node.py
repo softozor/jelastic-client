@@ -6,7 +6,7 @@ class DockerSettings(NamedTuple):
     nodeGroup: str = None
 
 
-class EnvNode(NamedTuple):
+class NodeSettings(NamedTuple):
     docker: DockerSettings = None
     count: int = 1
     displayName: str = None
@@ -16,4 +16,4 @@ class EnvNode(NamedTuple):
     nodeType: str = None
 
 
-EnvNodes = List[EnvNode]
+MultipleNodeSettings = List[NodeSettings]

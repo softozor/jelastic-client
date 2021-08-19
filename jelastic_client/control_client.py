@@ -3,8 +3,13 @@ from typing import Dict
 
 import simplejson as json
 
-from .core import ApiClient, BaseClient, ApiClientException, who_am_i
-from .env_node import EnvNodes
+from .core import (
+    ApiClient,
+    BaseClient,
+    ApiClientException,
+    who_am_i
+)
+from .env_node import MultipleNodeSettings
 from .env_settings import EnvSettings
 
 
@@ -34,7 +39,7 @@ class ControlClient(BaseClient):
     def __init__(self, api_client: ApiClient):
         super().__init__(api_client)
 
-    def create_environment(self, env: EnvSettings, nodes: EnvNodes) -> str:
+    def create_environment(self, env: EnvSettings, nodes: MultipleNodeSettings) -> str:
         env_json = json.dumps(env)
         nodes_json = json.dumps(nodes)
         response = self._execute(who_am_i(), env=env_json, nodes=nodes_json)
@@ -61,6 +66,7 @@ class ControlClient(BaseClient):
                 }
             }
 
+    # TODO: we should probably have an EnvInfo class wrapping the response Dict with the following methods
     def env_is_running(self, env_name: str) -> bool:
         env_info = self.get_env_info(env_name)
         env_status = Status(env_info["env"]["status"])
@@ -72,3 +78,30 @@ class ControlClient(BaseClient):
         env_status = Status(env_info["env"]["status"])
 
         return env_status is not Status.NotExists and env_status is not Status.Unknown
+
+    # TODO: test this:
+    #   1. create_env -> return env info
+    #   2. from env info, we know what (intIP, nodeGroup, nodeType) we have (given a nodeGroup, we know what intIPs to expect for example)
+    #   3. confront get_node_ips with the previously obtained env info
+    # - given a nodeGroup, fetch the related IPs
+    # - given a nodeType, fetch the related IPs
+    # - give a nodeType AND a nodeGroup, fetch the related IPs
+    def get_node_ips(self, env_name: str, node_group: str = None, node_type: str = None) -> list[str]:
+        env_info = self.get_env_info(env_name)
+        env_nodes = env_info["nodes"]
+
+        node_ips_with_node_group = []
+        if node_group is not None:
+            node_ips_with_node_group = [env_node["intIP"] for env_node in env_nodes if
+                                        env_node["nodeGroup"] == node_group]
+            if node_type is None:
+                return node_ips_with_node_group
+
+        node_ips_with_node_type = []
+        if node_type is not None:
+            node_ips_with_node_type = [
+                env_node["intIP"] for env_node in env_nodes if env_node["nodeType"] == node_type]
+            if node_group is None:
+                return node_ips_with_node_type
+
+        return list(set(node_ips_with_node_type).intersection(node_ips_with_node_group))
