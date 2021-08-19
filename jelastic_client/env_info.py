@@ -1,17 +1,13 @@
-from typing import NamedTuple, List, Dict
+from typing import Dict
 
 from jelastic_client.env_status import EnvStatus
+from jelastic_client.node import Node, Nodes
 
 
-class Node(NamedTuple):
-    int_ip: str
-    node_group: str
-    node_type: str
-
-
-def get_nodes_from_env_info(env_info: Dict) -> List[Node]:
+def get_nodes_from_env_info(env_info: Dict) -> Nodes:
     nodes = []
-    raw_nodes = env_info["nodes"]
+    raw_nodes = env_info["nodes"] if hasattr(
+        env_info, "nodes") and env_info["nodes"] is not None else []
     for raw_node in raw_nodes:
         node = Node(
             int_ip=raw_node["intIP"], node_type=raw_node["nodeType"], node_group=raw_node["nodeGroup"])
@@ -31,7 +27,7 @@ class EnvInfo:
     def env_name(self) -> str:
         return self._info["env"]["envName"]
 
-    def nodes(self) -> List[Node]:
+    def nodes(self) -> Nodes:
         return self._nodes
 
     def is_running(self) -> bool:
@@ -46,6 +42,7 @@ class EnvInfo:
     # - given a nodeGroup, fetch the related IPs
     # - given a nodeType, fetch the related IPs
     # - give a nodeType AND a nodeGroup, fetch the related IPs
+    # TODO: use multipledispatch
     def get_node_ips(self, node_group: str = None, node_type: str = None) -> list[str]:
         env_nodes = self._nodes
 
