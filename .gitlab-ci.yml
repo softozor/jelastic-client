@@ -62,7 +62,7 @@ publish-patch:
   variables:
     PACKAGE_NAME: jelastic-client
   before_script:
-    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi)
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --min-version $MIN_PACKAGE_VERSION)
   script:
     - *publish-package
   only:
@@ -78,7 +78,7 @@ publish-minor:
   variables:
     PACKAGE_NAME: jelastic-client
   before_script:
-    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version minor)
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version minor --min-version $MIN_PACKAGE_VERSION)
   script:
     - *publish-package
   when: manual
@@ -95,7 +95,7 @@ publish-major:
   variables:
     PACKAGE_NAME: jelastic-client
   before_script:
-    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version major)
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version major --min-version $MIN_PACKAGE_VERSION)
   script:
     - *publish-package
   when: manual
