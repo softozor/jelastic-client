@@ -4,6 +4,12 @@ stages:
   - test
   - publish
 
+.publish-package: &publish-package
+  - python3 setup.py sdist bdist_wheel
+  - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/* --verbose
+  - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=${PYPI_API_USERNAME} python -m twine upload dist/* --verbose
+
+
 lint:
   stage: lint
   image: softozor/python-lint:$TOOLS_SHA
@@ -50,7 +56,7 @@ test:
     paths:
       - $CI_PROJECT_DIR/test-reports
 
-publish:
+publish-patch:
   stage: publish
   image: softozor/python-publish:$TOOLS_SHA
   variables:
@@ -58,9 +64,41 @@ publish:
   before_script:
     - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi)
   script:
-    - python3 setup.py sdist bdist_wheel
-    - TWINE_PASSWORD=${CI_JOB_TOKEN} TWINE_USERNAME=gitlab-ci-token python -m twine upload --repository-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi dist/* --verbose
-    - TWINE_PASSWORD=${PYPI_API_TOKEN} TWINE_USERNAME=${PYPI_API_USERNAME} python -m twine upload dist/*
+    - *publish-package
+  only:
+    refs:
+      - master
+    changes:
+      - jelastic_client/**/*
+      - setup.py
+
+publish-minor:
+  stage: publish
+  image: softozor/python-publish:$TOOLS_SHA
+  variables:
+    PACKAGE_NAME: jelastic-client
+  before_script:
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version minor)
+  script:
+    - *publish-package
+  when: manual
+  only:
+    refs:
+      - master
+    changes:
+      - jelastic_client/**/*
+      - setup.py
+
+publish-major:
+  stage: publish
+  image: softozor/python-publish:$TOOLS_SHA
+  variables:
+    PACKAGE_NAME: jelastic-client
+  before_script:
+    - export JELASTIC_CLIENT_VERSION=$(python3 /usr/local/bin/get_latest_package_version.py --package-name $PACKAGE_NAME --package-type pypi --increase-version major)
+  script:
+    - *publish-package
+  when: manual
   only:
     refs:
       - master
