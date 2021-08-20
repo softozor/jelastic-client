@@ -16,7 +16,7 @@ client_version = os.environ.get("JELASTIC_CLIENT_VERSION", "0.0.0")
 server_version = os.environ.get("JELASTIC_VERSION", "0.0.0")
 
 setuptools.setup(
-    name="jelastic_client",
+    name="jelastic-client",
     version=client_version,
     author="Laurent Michel",
     author_email="softozor@gmail.com",
