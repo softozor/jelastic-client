@@ -3,9 +3,11 @@ from jelastic_client.node import Node, Nodes
 
 
 def get_nodes_from_env_info(env_info: dict) -> Nodes:
+    if "nodes" not in env_info or env_info["nodes"] is None:
+        return []
+
     nodes = []
-    raw_nodes = env_info["nodes"] if hasattr(
-        env_info, "nodes") and env_info["nodes"] is not None else []
+    raw_nodes = env_info["nodes"]
     for raw_node in raw_nodes:
         node = Node(
             int_ip=raw_node["intIP"], node_type=raw_node["nodeType"], node_group=raw_node["nodeGroup"])
@@ -34,13 +36,7 @@ class EnvInfo:
     def exists(self) -> bool:
         return self.status() is not EnvStatus.NotExists and self.status() is not EnvStatus.Unknown
 
-    # TODO: test this:
-    #   1. feed the class with some test dictionary corresponding to real-world
-    #   2. confront get_node_ips with the previously fed env info
-    # - given a nodeGroup, fetch the related IPs
-    # - given a nodeType, fetch the related IPs
-    # - give a nodeType AND a nodeGroup, fetch the related IPs
-    def get_node_ips(self, node_group: str = None, node_type: str = None) -> list[str]:
+    def get_node_ips(self, node_group: str = None, node_type: str = None) -> [str]:
         env_nodes = self._nodes
 
         node_ips_with_node_group = []
