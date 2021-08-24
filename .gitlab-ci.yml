@@ -71,6 +71,9 @@ publish-patch:
     changes:
       - jelastic_client/**/*
       - setup.py
+  except:
+    variables:
+      - $SCHEDULED_BUILD == "true"
 
 publish-minor:
   stage: publish
@@ -88,6 +91,9 @@ publish-minor:
     changes:
       - jelastic_client/**/*
       - setup.py
+  except:
+    variables:
+      - $SCHEDULED_BUILD == "true"
 
 publish-major:
   stage: publish
@@ -105,3 +111,6 @@ publish-major:
     changes:
       - jelastic_client/**/*
       - setup.py
+  except:
+    variables:
+      - $SCHEDULED_BUILD == "true"
