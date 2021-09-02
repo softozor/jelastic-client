@@ -38,6 +38,21 @@ def test_jps_client_install_valid_manifest_makes_environment_run(
     assert env_info.is_running()
 
 
+def test_jps_client_install_valid_manifest_returns_success_text(
+        jps_client: JpsClient,
+        test_data_dir: str,
+        new_env_name: str):
+    # Arrange
+    filename = os.path.join(test_data_dir, "valid_manifest.jps")
+
+    # Act
+    actual_success_text = jps_client.install(filename, new_env_name)
+
+    # Assert
+    expected_success_text = "<strong>Field1</strong>: Value1\n<strong>Field2</strong>: Value2"
+    assert expected_success_text == actual_success_text
+
+
 def test_jps_client_install_invalid_manifest_raises_exception(
         jps_client: JpsClient,
         test_data_dir: str,
