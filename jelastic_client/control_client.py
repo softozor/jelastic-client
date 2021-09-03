@@ -3,8 +3,8 @@ import simplejson as json
 from .core import (
     ApiClient,
     BaseClient,
-    ApiClientException,
-    who_am_i
+    who_am_i,
+    JelasticClientException
 )
 from .env_info import EnvInfo
 from .env_settings import EnvSettings
@@ -38,7 +38,7 @@ class ControlClient(BaseClient):
                 who_am_i(),
                 envName=env_name
             )
-        except ApiClientException as e:
+        except JelasticClientException as e:
             response = {
                 "result": e.response["result"],
                 "env": {

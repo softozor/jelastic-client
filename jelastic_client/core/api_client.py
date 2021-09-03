@@ -2,13 +2,13 @@ import logging
 
 import httpx
 
-from .exceptions import ApiClientException
+from .exceptions import JelasticClientException
 
 
 def compute_function_endpoint(two_dotted_function_name: str):
     uri_chunks = two_dotted_function_name.split(".")
     if len(uri_chunks) != 3:
-        raise ApiClientException(
+        raise JelasticClientException(
             f"Function ({two_dotted_function_name}) doesn't match standard Jelastic function (Group.Class.Function)"
         )
     grp = uri_chunks[0]
@@ -40,13 +40,13 @@ class ApiClient:
             method=method, url=f"{self.api_url.strip('/')}/{uri}", data=data
         )
         if r.status_code != httpx.codes.OK:
-            raise ApiClientException(
+            raise JelasticClientException(
                 f"{method} to {uri} failed with HTTP code {r.status_code}"
             )
 
         response = r.json()
         if response["result"] != 0:
-            raise ApiClientException(
+            raise JelasticClientException(
                 f"{method} to {uri} returned non-zero result", response
             )
         self.logger.debug(f"response : {response}")
