@@ -17,6 +17,8 @@ pip3 install jelastic-client
 
 # Usage
 
+At the root of this repository, you can run
+
 ```python
 import jelastic_client
 
@@ -25,5 +27,9 @@ api_token = "your-private-access-token"
 
 factory = jelastic_client.JelasticClientFactory(api_url, api_token)
 jps_client = factory.create_jps_client()
-jps_client.install("/path/to/your/manifest", "your-env-name")
+env_name = "my-jelastic-client-test"
+jps_client.install_from_file("./test/data/valid_manifest.jps", env_name)
+control_client = factory.create_control_client()
+env_info = control_client.get_env_info(env_name)
+assert env_info.is_running() is True
 ```
