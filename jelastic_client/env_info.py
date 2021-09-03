@@ -10,7 +10,10 @@ def get_nodes_from_env_info(env_info: dict) -> Nodes:
     raw_nodes = env_info["nodes"]
     for raw_node in raw_nodes:
         node = Node(
-            int_ip=raw_node["intIP"], node_type=raw_node["nodeType"], node_group=raw_node["nodeGroup"])
+            int_ip=raw_node["intIP"],
+            node_type=raw_node["nodeType"],
+            node_group=raw_node["nodeGroup"],
+            display_name=raw_node["displayName"] if "displayName" in raw_node else None)
         nodes.append(node)
     return nodes
 
@@ -53,4 +56,11 @@ class EnvInfo:
             if node_group is None:
                 return node_ips_with_node_type
 
-        return list(set(node_ips_with_node_type).intersection(node_ips_with_node_group))
+        return list(set(node_ips_with_node_type)
+                    .intersection(node_ips_with_node_group))
+
+    def get_node_ip_from_name(self, display_name: str):
+        node_ips_with_display_name = [
+            env_node.int_ip for env_node in self._nodes if env_node.display_name == display_name]
+
+        return node_ips_with_display_name[0] if len(node_ips_with_display_name) == 1 else None

@@ -398,3 +398,89 @@ def test_env_info_get_node_ips_returns_filtered_ips(input_dict: dict, node_group
 
     # Assert
     assert not set(actual_ips) ^ set(expected_ips)
+
+
+@pytest.mark.parametrize(
+    "input_dict,display_name,expected_ip",
+    [
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "target-node"
+                    }
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", "10.102.15.248", id="list of 1 node with desired display name"
+        ),
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.249",
+                    },
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "target-node"
+                    },
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.250",
+                        "displayName": "uninteresting-node"
+                    },
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", "10.102.15.248", id="list of multiple nodes containing the desired display name"
+        ),
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.249",
+                    },
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "other-name"
+                    },
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.250",
+                        "displayName": "uninteresting-node"
+                    },
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", None, id="list of multiple nodes not containing the desired display name"
+        ),
+    ]
+)
+def test_env_info_get_node_ip_from_name_returns_corresponding_ip(input_dict: dict, display_name: str, expected_ip: str):
+    # Arrange
+    env_info = EnvInfo(input_dict)
+
+    # Act
+    actual_ip = env_info.get_node_ip_from_name(display_name)
+
+    # Assert
+    assert actual_ip == expected_ip
