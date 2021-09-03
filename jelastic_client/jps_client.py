@@ -12,9 +12,9 @@ class JpsClient(BaseClient):
     def install_from_file(self, filename: str, env_name: str) -> str:
         with open(filename) as file:
             manifest_content = file.read()
-            return self.install_from_content(manifest_content, env_name)
+            return self.install(manifest_content, env_name)
 
-    def install_from_content(self, manifest_content: str, env_name: str) -> str:
+    def install(self, manifest_content: str, env_name: str) -> str:
         response = self._execute(
             who_am_i(),
             jps=manifest_content,
