@@ -71,7 +71,7 @@ def invalid_manifest(test_data_dir) -> str:
 
 
 @pytest.fixture
-def non_existent_manifest() -> str:
+def non_existent_manifest(test_data_dir) -> str:
     filename = os.path.join(test_data_dir, "non_existent_manifest.jps")
     assert not os.path.exists(filename)
     return filename
