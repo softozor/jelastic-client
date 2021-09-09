@@ -1,5 +1,5 @@
 type: install
-name: Simple Test Manifest
+name: valid manifest
 
 nodes:
   count: 1
@@ -11,5 +11,5 @@ skipNodeEmails: true
 success:
   email: false
   text: |
-    **Field1**: Value1
+    **Field1**: Value1  
     **Field2**: Value2

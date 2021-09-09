@@ -56,6 +56,28 @@ def test_data_dir(request: FixtureRequest) -> str:
 
 
 @pytest.fixture
+def valid_manifest(test_data_dir) -> str:
+    return os.path.join(test_data_dir, "valid_manifest.jps")
+
+
+@pytest.fixture
+def manifest_with_settings(test_data_dir) -> str:
+    return os.path.join(test_data_dir, "manifest_with_settings.jps")
+
+
+@pytest.fixture
+def invalid_manifest(test_data_dir) -> str:
+    return os.path.join(test_data_dir, "invalid_manifest.jps")
+
+
+@pytest.fixture
+def non_existent_manifest() -> str:
+    filename = os.path.join(test_data_dir, "non_existent_manifest.jps")
+    assert not os.path.exists(filename)
+    return filename
+
+
+@pytest.fixture
 def supported_jelastic_version(request: FixtureRequest) -> str:
     return request.config.getoption("--jelastic-version")
 
