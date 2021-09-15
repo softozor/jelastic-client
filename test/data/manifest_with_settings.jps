@@ -12,13 +12,6 @@ settings:
       type: string
       required: true
 
-nodes:
-  count: 1
-  cloudlets: 4
-  nodeGroup: cp
-  image: alpine:latest
-skipNodeEmails: true
-
 success:
   email: false
   text: |

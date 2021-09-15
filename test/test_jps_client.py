@@ -74,8 +74,7 @@ def test_jps_client_install_from_file_non_existent_manifest_raises_exception(
 
 def test_jps_client_install_from_file_manifest_with_settings_takes_settings_into_account(
         jps_client: JpsClient,
-        manifest_with_settings: str,
-        new_env_name: str):
+        manifest_with_settings: str):
     # Arrange
     expected_settings = {
         "field1": "the value 1",
@@ -85,7 +84,6 @@ def test_jps_client_install_from_file_manifest_with_settings_takes_settings_into
     # Act
     success_text = jps_client.install_from_file(
         manifest_with_settings,
-        env_name=new_env_name,
         settings=expected_settings)
     manifest_data = get_manifest_data(success_text)
 
