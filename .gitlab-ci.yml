@@ -70,6 +70,7 @@ publish-patch:
       - master
     changes:
       - jelastic_client/**/*
+      - test_utils/**/*
       - setup.py
   except:
     variables:
@@ -90,6 +91,7 @@ publish-minor:
       - master
     changes:
       - jelastic_client/**/*
+      - test_utils/**/*
       - setup.py
   except:
     variables:
@@ -110,6 +112,7 @@ publish-major:
       - master
     changes:
       - jelastic_client/**/*
+      - test_utils/**/*
       - setup.py
   except:
     variables:
