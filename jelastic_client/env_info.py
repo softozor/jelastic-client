@@ -31,6 +31,9 @@ class EnvInfo:
     def env_name(self) -> str:
         return self._info["env"]["envName"]
 
+    def domain(self) -> str:
+        return self._info["env"]["domain"]
+
     def nodes(self) -> Nodes:
         return self._nodes
 

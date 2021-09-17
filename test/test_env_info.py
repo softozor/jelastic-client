@@ -79,6 +79,24 @@ def test_env_info_env_name():
     assert expected_env_name == actual_env_name
 
 
+def test_env_info_domain():
+    # Arrange
+    expected_domain = "local-sha-master-0954606.hidora.com"
+    input_dict = {
+        "nodes": [],
+        "env": {
+            "domain": expected_domain
+        }
+    }
+    env_info = EnvInfo(input_dict)
+
+    # Act
+    actual_domain = env_info.domain()
+
+    # Assert
+    assert expected_domain == actual_domain
+
+
 @pytest.mark.parametrize(
     "input_dict,expected_running",
     [
