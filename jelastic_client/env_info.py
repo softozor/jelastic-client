@@ -84,5 +84,7 @@ class EnvInfo:
 
     def get_node_hostname_from_name(self, display_name: str) -> str:
         url = self.get_node_url_from_name(display_name)
+        if url is None:
+            return None
         hostname = url.split('://')[1]
         return hostname
