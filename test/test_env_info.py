@@ -211,7 +211,8 @@ def test_env_info_exists(input_dict: dict, expected_exists: bool):
                         "url": "http://irrelevant.com"
                     }
                 ],
-            }, [Node(int_ip="10.102.15.248", node_type="docker", node_group="cp", url="http://irrelevant.com")], id="single node"
+            }, [Node(int_ip="10.102.15.248", node_type="docker", node_group="cp", url="http://irrelevant.com")],
+            id="single node"
         ),
         pytest.param(
             {
@@ -230,7 +231,8 @@ def test_env_info_exists(input_dict: dict, expected_exists: bool):
                     }
                 ],
             }, [Node(int_ip="10.102.15.248", node_type="docker", node_group="cp", url="http://irrelevant.com"),
-                Node(int_ip="10.102.15.249", node_type="postgresql", node_group="sqldb", url="http://irrelevant.com")], id="multiple nodes"
+                Node(int_ip="10.102.15.249", node_type="postgresql", node_group="sqldb", url="http://irrelevant.com")],
+            id="multiple nodes"
         ),
     ]
 )
@@ -607,3 +609,81 @@ def test_env_info_get_node_hostname_from_name_returns_hostname(input_dict: dict,
 
     # Assert
     assert actual_hostname == expected_hostname
+
+
+@pytest.mark.parametrize(
+    "input_dict,display_name,expected_url",
+    [
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "target-node",
+                        "url": "http://node89876-local-sha-master-0954606.hidora.com"
+                    }
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", "http://node89876-local-sha-master-0954606.hidora.com",
+            id="list of 1 node with desired display name"
+        ),
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "irrelevant-node",
+                        "url": "http://node89876-local-sha-master-0954606.hidora.com"
+                    }
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", None,
+            id="list of 1 node without the desired display name"
+        ),
+        pytest.param(
+            {
+                "nodes": [
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.248",
+                        "displayName": "irrelevant-node",
+                        "url": "http://node89876-local-sha-master-0954606.hidora.com"
+                    },
+                    {
+                        "nodeGroup": "cp",
+                        "nodeType": "docker",
+                        "intIP": "10.102.15.268",
+                        "displayName": "target-node",
+                        "url": "http://node89886-local-sha-master-0954656.hidora.com"
+                    }
+                ],
+                "env": {
+                    "envName": "local-sha-master-0954606",
+                    "status": 1
+                }
+            }, "target-node", "http://node89886-local-sha-master-0954656.hidora.com",
+            id="list of multiple nodes with the desired display name"
+        ),
+    ]
+)
+def test_env_info_get_node_url_from_name_returns_url(
+        input_dict: dict, display_name: str, expected_url: str):
+    # Arrange
+    env_info = EnvInfo(input_dict)
+
+    # Act
+    actual_url = env_info.get_node_url_from_name(display_name)
+
+    # Assert
+    assert actual_url == expected_url

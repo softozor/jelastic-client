@@ -76,10 +76,13 @@ class EnvInfo:
         node = self.get_node_from_name(display_name)
         return node.int_ip if node is not None else None
 
-    def get_node_hostname_from_name(self, display_name: str) -> str:
+    def get_node_url_from_name(self, display_name: str) -> str:
         node = self.get_node_from_name(display_name)
         if node is None:
             return None
-        url = node.url
+        return node.url
+
+    def get_node_hostname_from_name(self, display_name: str) -> str:
+        url = self.get_node_url_from_name(display_name)
         hostname = url.split('://')[1]
         return hostname
