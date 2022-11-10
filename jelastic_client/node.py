@@ -1,4 +1,4 @@
-from typing import NamedTuple
+from typing import NamedTuple, List
 
 
 class Node(NamedTuple):
@@ -10,4 +10,4 @@ class Node(NamedTuple):
     display_name: str = None
 
 
-Nodes = list[Node]
+Nodes = List[Node]

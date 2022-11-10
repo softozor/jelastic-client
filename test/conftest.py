@@ -20,6 +20,8 @@ from jelastic_client.account_client import AccountClient
 from jelastic_client.env_info import EnvInfo
 from utils import get_new_random_env_name
 
+here = os.path.dirname(os.path.abspath(__file__))
+
 
 def pytest_addoption(parser):
     parser.addoption(
@@ -34,14 +36,8 @@ def pytest_addoption(parser):
     parser.addoption(
         "--base-url",
         action="store",
-        default="https://raw.githubusercontent.com/softozor/packages/master/pypi/jelastic-client",
+        default="https://raw.githubusercontent.com/softozor/jelastic-client/main/",
         help="project base url for raw files",
-    )
-    parser.addoption(
-        "--test-data-dir",
-        action="store",
-        default="./data",
-        help="path to test data folder",
     )
     parser.addoption(
         "--jelastic-version",
@@ -84,11 +80,6 @@ def base_url(request: FixtureRequest) -> str:
 
 
 @pytest.fixture
-def test_data_dir(request: FixtureRequest) -> str:
-    return request.config.getoption("--test-data-dir")
-
-
-@pytest.fixture
 def jelastic_user_email(request: FixtureRequest) -> str:
     return request.config.getoption("--jelastic-user-email")
 
@@ -104,8 +95,8 @@ def commit_sha(request: FixtureRequest) -> str:
 
 
 @pytest.fixture
-def valid_manifest_file(test_data_dir) -> str:
-    return os.path.join(test_data_dir, "valid_manifest.jps")
+def valid_manifest_file() -> str:
+    return os.path.join(here, "data", "valid_manifest.jps")
 
 
 @pytest.fixture
@@ -117,8 +108,8 @@ def valid_manifest_url(base_url) -> str:
 
 
 @pytest.fixture
-def manifest_file_with_settings(test_data_dir) -> str:
-    return os.path.join(test_data_dir, "manifest_with_settings.jps")
+def manifest_file_with_settings() -> str:
+    return os.path.join(here, "data", "manifest_with_settings.jps")
 
 
 @pytest.fixture
@@ -130,8 +121,8 @@ def manifest_url_with_settings(base_url) -> str:
 
 
 @pytest.fixture
-def invalid_manifest_file(test_data_dir) -> str:
-    return os.path.join(test_data_dir, "invalid_manifest.jps")
+def invalid_manifest_file() -> str:
+    return os.path.join(here, "data", "invalid_manifest.jps")
 
 
 @pytest.fixture
@@ -143,8 +134,8 @@ def invalid_manifest_url(base_url) -> str:
 
 
 @pytest.fixture
-def non_existent_manifest_file(test_data_dir) -> str:
-    filename = os.path.join(test_data_dir, "non_existent_manifest.jps")
+def non_existent_manifest_file() -> str:
+    filename = os.path.join(here, "data", "non_existent_manifest.jps")
     assert not os.path.exists(filename)
     return filename
 
@@ -253,5 +244,7 @@ def alpine_with_file(
 
 @pytest.fixture
 def expected_file_content_in_alpine_with_file() -> str:
-    with open(os.path.join("./docker", "alpine-with-file", "file.txt"), "r") as file:
+    with open(
+        os.path.join(here, "docker", "alpine-with-file", "file.txt"), "r"
+    ) as file:
         return file.read()
