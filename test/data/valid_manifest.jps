@@ -1,0 +1,18 @@
+type: install
+name: valid manifest
+
+nodes:
+  count: 1
+  cloudlets: 4
+  nodeGroup: cp
+  image: alpine:latest
+  env:
+    MY_JSON_VAR: '{"type": "test", "audience": ["app-1", "app-2"]}'
+    MY_OTHER_VAR: hey
+skipNodeEmails: true
+
+success:
+  email: false
+  text: |
+    **Field1**: Value1  
+    **Field2**: Value2

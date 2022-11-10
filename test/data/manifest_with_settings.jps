@@ -1,0 +1,19 @@
+type: install
+name: manifest with settings
+
+settings:
+  fields:
+    - name: field1
+      caption: Field1
+      type: string
+      required: true
+    - name: field2
+      caption: Field2
+      type: string
+      required: true
+
+success:
+  email: false
+  text: |
+    **field1**: ${settings.field1}  
+    **field2**: ${settings.field2}
