@@ -36,8 +36,6 @@ object SharedLibraries_JelasticClient_Build : BuildType({
     id("BuildWheel")
     name = "Build Wheel"
 
-    //
-
     vcs {
         root(DslContext.settingsRoot)
     }
@@ -63,9 +61,8 @@ object SharedLibraries_JelasticClient_Build : BuildType({
             // TODO: we need a docker-tools repo with a docker image for python tests
             // dockerImage = ""
         }
-        // TODO: we need this publish that will just append the git commit to the current version
         // TODO: we also need a separate build config that will push the wheel on tagging
-        // TODO: we want to publish to pypi.org too
+        // TODO: we want to publish to pypi.org too, but only the non-dev versions
         script {
             name = "Publish"
             scriptContent = """
@@ -73,11 +70,10 @@ object SharedLibraries_JelasticClient_Build : BuildType({
                 
                 set -e
                 
-                // TODO: we need a way to define good tags on feature branches and on master branch
-                poetry version $(git describe --tags)
+                poetry version $(git describe --tags).dev-$(git describe --always --tags --match v*)
                 poetry config repositories.pypi-hosted https://%system.pypi-registry.hosted%/
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
-                poetry publish --build -r pypi-hosted
+                poetry publish -r pypi-hosted
             """.trimIndent()
         }
     }
