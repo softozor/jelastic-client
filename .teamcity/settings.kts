@@ -26,6 +26,9 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2022.10"
 
 project {
-
+    params {
+        param("jelastic.version", "7.0.3")
+    }
+    
     buildType(Integration)
 }
