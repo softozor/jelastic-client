@@ -40,7 +40,7 @@ object Integration : BuildType({
             scriptContent = """
                 #! /bin/sh
                 
-                pyenv local 3.8.12 3.9.10 3.10.2
+                pyenv local 3.8 3.9 3.10 3.11
                 tox -- -s -v --cov --cov-report term-missing --cov-report html --teamcity --cov-append test -n 4 --api-token=%system.jelastic.access-token% --jelastic-version=%jelastic.version% --commit-sha=%build.vcs.number% --jelastic-user-email=%system.jelastic.user-email%       
             """.trimIndent()
             dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:a63df625"
