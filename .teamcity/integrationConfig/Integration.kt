@@ -31,6 +31,9 @@ object Integration : BuildType({
                 
                 poetry build
             """.trimIndent()
+            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:a63df625"
+            dockerPull = true
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
         script {
             name = "Test"
@@ -57,6 +60,9 @@ object Integration : BuildType({
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
                 poetry publish -r pypi-hosted
             """.trimIndent()
+            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:a63df625"
+            dockerPull = true
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
     }
 
