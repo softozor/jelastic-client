@@ -41,7 +41,7 @@ object Integration : BuildType({
                 #! /bin/sh
                 
                 pyenv local 3.8 3.9 3.10 3.11
-                tox -- -s -v --cov --cov-report term-missing --cov-report html --teamcity --cov-append test -n 4 --api-token=%system.jelastic.access-token% --jelastic-version=%jelastic.version% --commit-sha=%build.vcs.number% --jelastic-user-email=%system.jelastic.user-email%       
+                tox -- -s -v --cov jelastic_client --cov-report term-missing --cov-report html --teamcity --cov-append test -n 4 --api-token=%system.jelastic.access-token% --jelastic-version=%jelastic.version% --commit-sha=%build.vcs.number% --jelastic-user-email=%system.jelastic.user-email%       
             """.trimIndent()
             dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:a63df625"
             dockerPull = true

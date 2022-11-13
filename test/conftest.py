@@ -6,7 +6,6 @@ import pytest
 import requests
 from _pytest.fixtures import FixtureRequest
 
-import jelastic_client
 from jelastic_client import (
     JelasticClientFactory,
     JpsClient,
@@ -15,10 +14,10 @@ from jelastic_client import (
     EnvSettings,
     DockerSettings,
     NodeSettings,
+    AccountClient,
+    EnvInfo,
 )
-from jelastic_client.account_client import AccountClient
-from jelastic_client.env_info import EnvInfo
-from utils import get_new_random_env_name
+from test.utils import get_new_random_env_name
 
 here = os.path.dirname(os.path.abspath(__file__))
 
