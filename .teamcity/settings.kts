@@ -1,7 +1,5 @@
+import integrationConfig.Integration
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
-import jetbrains.buildServer.configs.kotlin.buildSteps.script
-import jetbrains.buildServer.configs.kotlin.triggers.vcs
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -29,63 +27,5 @@ version = "2022.10"
 
 project {
 
-    buildType(SharedLibraries_JelasticClient_Build)
+    buildType(Integration)
 }
-
-object SharedLibraries_JelasticClient_Build : BuildType({
-    id("BuildWheel")
-    name = "Build Wheel"
-
-    vcs {
-        root(DslContext.settingsRoot)
-    }
-
-    steps {
-        publishCommitShortSha()
-        script {
-            name = "Build"
-            scriptContent = """
-                #! /bin/sh
-                
-                poetry build
-            """.trimIndent()
-        }
-        script {
-            name = "Test"
-            scriptContent = """
-                #! /bin/sh
-                
-                pyenv local 3.8.12 3.9.10 3.10.2
-                tox -- -s -v --cov --cov-report term-missing --cov-report html --teamcity --cov-append test -n 4 --api-token=%system.jelastic.access-token% --jelastic-version=%jelastic.version% --commit-sha=%build.vcs.number% --jelastic-user-email=%system.jelastic.user-email%       
-            """.trimIndent()
-            // TODO: we need a docker-tools repo with a docker image for python tests
-            // dockerImage = ""
-        }
-        // TODO: we also need a separate build config that will push the wheel on tagging
-        // TODO: we want to publish to pypi.org too, but only the non-dev versions
-        script {
-            name = "Publish"
-            scriptContent = """
-                #! /bin/sh
-                
-                set -e
-                
-                poetry version $(git describe --tags).dev-$(git describe --always --tags --match v*)
-                poetry config repositories.pypi-hosted https://%system.pypi-registry.hosted%/
-                poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
-                poetry publish -r pypi-hosted
-            """.trimIndent()
-        }
-    }
-
-
-    triggers {
-        vcs {
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-})
