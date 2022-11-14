@@ -2,7 +2,7 @@ import random
 import string
 from typing import List, Optional
 
-import simplejson as json
+import simplejson as json  # type: ignore
 
 from .core import ApiClient, BaseClient, JelasticClientException, who_am_i
 from .env_info import EnvInfo

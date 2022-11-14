@@ -1,10 +1,10 @@
 import os
 import random
 from test.utils import get_new_random_env_name
-from typing import Tuple
+from typing import Generator, Tuple, TypeVar
 
 import pytest
-import requests
+import requests  # type: ignore
 from _pytest.fixtures import FixtureRequest
 
 from jelastic_client import (
@@ -20,6 +20,10 @@ from jelastic_client import (
 )
 
 here = os.path.dirname(os.path.abspath(__file__))
+
+T = TypeVar("T")
+
+YieldFixture = Generator[T, None, None]
 
 
 def pytest_addoption(parser):
@@ -173,7 +177,9 @@ def account_client(client_factory: JelasticClientFactory) -> AccountClient:
 
 
 @pytest.fixture
-def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str) -> str:
+def new_env_name(
+    control_client: ControlClient, commit_sha: str, worker_id: str
+) -> YieldFixture[str]:
     env_name = get_new_random_env_name(control_client, commit_sha, worker_id)
     yield env_name
     env_info = control_client.get_env_info(env_name)
@@ -182,7 +188,9 @@ def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str)
 
 
 @pytest.fixture
-def created_environment(control_client: ControlClient, new_env_name: str) -> EnvInfo:
+def created_environment(
+    control_client: ControlClient, new_env_name: str
+) -> YieldFixture[EnvInfo]:
     env = EnvSettings(shortdomain=new_env_name)
     sql_node = NodeSettings(
         fixedCloudlets=3, flexibleCloudlets=4, nodeType="postgresql"
@@ -201,7 +209,7 @@ def created_environment(control_client: ControlClient, new_env_name: str) -> Env
 @pytest.fixture
 def cloned_environment(
     control_client: ControlClient, created_environment: EnvInfo
-) -> EnvInfo:
+) -> YieldFixture[EnvInfo]:
     created_env_name = created_environment.env_name()
     cloned_env_name = created_env_name + "-clone"
     env_info = control_client.clone_env(created_env_name, cloned_env_name)
@@ -217,7 +225,7 @@ def valid_environment_with_env_vars(
     control_client: ControlClient,
     new_env_name: str,
     valid_manifest_file: str,
-) -> str:
+) -> YieldFixture[str]:
     jps_client.install_from_file(valid_manifest_file, new_env_name)
     yield new_env_name
     env_info = control_client.get_env_info(new_env_name)

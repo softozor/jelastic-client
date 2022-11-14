@@ -1,7 +1,7 @@
 import json
 from typing import Optional
 
-import requests
+import requests  # type: ignore
 
 from .core import ApiClient, BaseClient, JelasticClientException, who_am_i
 
