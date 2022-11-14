@@ -149,7 +149,7 @@ def non_existent_manifest_url(base_url) -> str:
 
 @pytest.fixture
 def client_factory(api_url: str, api_token: str) -> JelasticClientFactory:
-    return jelastic_client.JelasticClientFactory(api_url, api_token)
+    return JelasticClientFactory(api_url, api_token)
 
 
 @pytest.fixture

@@ -3,9 +3,14 @@ import re
 
 import pytest
 
-from jelastic_client import ControlClient, NodeSettings, EnvSettings, DockerSettings
-from jelastic_client.core import JelasticClientException
-from jelastic_client.env_info import EnvInfo
+from jelastic_client import (
+    ControlClient,
+    NodeSettings,
+    EnvSettings,
+    DockerSettings,
+    EnvInfo,
+    JelasticClientException,
+)
 
 
 def test_generate_random_env_name_follows_jelastic_string_pattern(
