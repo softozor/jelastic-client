@@ -65,6 +65,12 @@ object Integration : BuildType({
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
     }
+    
+    artifactRules = """
+        dist/*.whl
+        dist/PKG-INFO.txt
+        coverage.zip
+    """.trimIndent()
 
     features {
         perfmon {
