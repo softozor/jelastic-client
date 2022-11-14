@@ -33,6 +33,7 @@ project {
 
     val dockerToolsTag = "3bd97369"
 
+    // TODO: add weekly trigger to the Integration config
     val integrationBuild = Integration(dockerTag = dockerToolsTag)
     val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
 
