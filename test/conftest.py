@@ -1,5 +1,6 @@
 import os
 import random
+from test.utils import get_new_random_env_name
 from typing import Tuple
 
 import pytest
@@ -7,17 +8,16 @@ import requests
 from _pytest.fixtures import FixtureRequest
 
 from jelastic_client import (
+    AccountClient,
+    ControlClient,
+    DockerSettings,
+    EnvInfo,
+    EnvSettings,
+    FileClient,
     JelasticClientFactory,
     JpsClient,
-    ControlClient,
-    FileClient,
-    EnvSettings,
-    DockerSettings,
     NodeSettings,
-    AccountClient,
-    EnvInfo,
 )
-from test.utils import get_new_random_env_name
 
 here = os.path.dirname(os.path.abspath(__file__))
 

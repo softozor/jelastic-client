@@ -7,4 +7,4 @@ from .exceptions import JelasticClientException
 
 def who_am_i() -> str:
     function_name_in_snake_case = inspect.stack()[1][3]
-    return "".join(function_name_in_snake_case.split('_'))
+    return "".join(function_name_in_snake_case.split("_"))

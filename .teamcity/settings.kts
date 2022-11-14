@@ -29,6 +29,13 @@ project {
     params {
         param("jelastic.version", "7.0.3")
     }
-    
-    buildType(Integration)
+
+    val dockerToolsTag = "3bd97369"
+
+    val integrationBuild = Integration(dockerTag = dockerToolsTag)
+
+    buildType(integrationBuild)
+
+    // TODO: we also need a separate build config that will push the wheel on tagging
+    // TODO: we want to publish to pypi.org too, but only the non-dev versions
 }

@@ -5,11 +5,11 @@ import pytest
 
 from jelastic_client import (
     ControlClient,
-    NodeSettings,
-    EnvSettings,
     DockerSettings,
     EnvInfo,
+    EnvSettings,
     JelasticClientException,
+    NodeSettings,
 )
 
 

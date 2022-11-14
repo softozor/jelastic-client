@@ -9,7 +9,6 @@ def success_response(response: dict) -> bool:
 
 
 class BaseClient(ABC):
-
     def __init__(self, api_client: ApiClient):
         self._api_client = api_client
 
@@ -25,14 +24,12 @@ class BaseClient(ABC):
 
     def _execute(self, fnc: str, **kwargs) -> dict:
         two_dotted_function_name = self._fnc(fnc)
-        response = self._api_client.execute(
-            two_dotted_function_name,
-            **kwargs
-        )
+        response = self._api_client.execute(two_dotted_function_name, **kwargs)
 
         if not success_response(response):
             raise JelasticClientException(
-                f"execution of function {two_dotted_function_name} failed", response)
+                f"execution of function {two_dotted_function_name} failed", response
+            )
 
         return response
 

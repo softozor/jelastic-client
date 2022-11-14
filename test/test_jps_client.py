@@ -1,7 +1,8 @@
+from test.utils import get_manifest_data
+
 import pytest
 
-from jelastic_client import ControlClient, JpsClient, JelasticClientException
-from test.utils import get_manifest_data
+from jelastic_client import ControlClient, JelasticClientException, JpsClient
 
 
 def test_jps_client_install_from_file_valid_manifest_file_creates_environment(

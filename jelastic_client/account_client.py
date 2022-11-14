@@ -1,8 +1,4 @@
-from .core import (
-    ApiClient,
-    BaseClient,
-    who_am_i
-)
+from .core import ApiClient, BaseClient, who_am_i
 from .user_info import UserInfo
 
 

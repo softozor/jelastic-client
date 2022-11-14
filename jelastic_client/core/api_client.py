@@ -47,7 +47,8 @@ class ApiClient:
         response = r.json()
         if response["result"] != 0:
             raise JelasticClientException(
-                f"{method} to {uri} returned non-zero result: {response['error']}", response
+                f"{method} to {uri} returned non-zero result: {response['error']}",
+                response,
             )
         self.logger.debug(f"response : {response}")
         return response

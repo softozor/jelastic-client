@@ -15,13 +15,13 @@ def get_nodes_from_env_info(env_info: dict) -> Nodes:
             node_type=raw_node["nodeType"],
             node_group=raw_node["nodeGroup"],
             url=raw_node["url"],
-            display_name=raw_node["displayName"] if "displayName" in raw_node else None)
+            display_name=raw_node["displayName"] if "displayName" in raw_node else None,
+        )
         nodes.append(node)
     return nodes
 
 
 class EnvInfo:
-
     def __init__(self, env_info: dict):
         self._info = env_info
         self._nodes = get_nodes_from_env_info(env_info)
@@ -42,31 +42,38 @@ class EnvInfo:
         return self.status() is EnvStatus.Running
 
     def exists(self) -> bool:
-        return self.status() is not EnvStatus.NotExists and self.status() is not EnvStatus.Unknown
+        return (
+            self.status() is not EnvStatus.NotExists
+            and self.status() is not EnvStatus.Unknown
+        )
 
     def get_nodes(self, node_group: str = None, node_type: str = None) -> Nodes:
         env_nodes = self._nodes
 
         nodes_with_node_group = []
         if node_group is not None:
-            nodes_with_node_group = [env_node for env_node in env_nodes if
-                                     env_node.node_group == node_group]
+            nodes_with_node_group = [
+                env_node for env_node in env_nodes if env_node.node_group == node_group
+            ]
             if node_type is None:
                 return nodes_with_node_group
 
         nodes_with_node_type = []
         if node_type is not None:
             nodes_with_node_type = [
-                env_node for env_node in env_nodes if env_node.node_type == node_type]
+                env_node for env_node in env_nodes if env_node.node_type == node_type
+            ]
             if node_group is None:
                 return nodes_with_node_type
 
-        return list(set(nodes_with_node_type)
-                    .intersection(nodes_with_node_group))
+        return list(set(nodes_with_node_type).intersection(nodes_with_node_group))
 
     def get_node_from_name(self, display_name: str) -> Node:
         nodes_with_display_name = [
-            env_node for env_node in self._nodes if env_node.display_name == display_name]
+            env_node
+            for env_node in self._nodes
+            if env_node.display_name == display_name
+        ]
         return nodes_with_display_name[0] if len(nodes_with_display_name) == 1 else None
 
     def get_node_ips(self, node_group: str = None, node_type: str = None) -> [str]:
@@ -87,5 +94,5 @@ class EnvInfo:
         url = self.get_node_url_from_name(display_name)
         if url is None:
             return None
-        hostname = url.split('://')[1]
+        hostname = url.split("://")[1]
         return hostname

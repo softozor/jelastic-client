@@ -1,6 +1,6 @@
 import pytest
 
-from jelastic_client import EnvInfo, EnvStatus, Nodes, Node
+from jelastic_client import EnvInfo, EnvStatus, Node, Nodes
 
 
 @pytest.mark.parametrize(
