@@ -1,5 +1,6 @@
 import random
 import string
+from typing import List, Optional
 
 import simplejson as json
 
@@ -66,7 +67,11 @@ class ControlClient(BaseClient):
         return response["object"]
 
     def remove_container_env_vars(
-        self, env_name: str, vars: [str], node_group: str = None, node_id: str = None
+        self,
+        env_name: str,
+        vars: List[str],
+        node_group: Optional[str] = None,
+        node_id: Optional[str] = None,
     ):
         self._execute(
             who_am_i(),
@@ -77,7 +82,11 @@ class ControlClient(BaseClient):
         )
 
     def add_container_env_vars(
-        self, env_name: str, vars: dict, node_group: str = None, node_id: int = None
+        self,
+        env_name: str,
+        vars: dict,
+        node_group: Optional[str] = None,
+        node_id: Optional[int] = None,
     ):
         self._execute(
             who_am_i(),
@@ -87,13 +96,13 @@ class ControlClient(BaseClient):
             vars=json.dumps(vars),
         )
 
-    def set_container_env_vars(self, env_name: str, node_id: int, vars: [str]):
+    def set_container_env_vars(self, env_name: str, node_id: int, vars: dict):
         self._execute(
             who_am_i(), envName=env_name, nodeId=node_id, vars=json.dumps(vars)
         )
 
     def set_container_env_vars_by_group(
-        self, env_name: str, node_group: str, vars: [str]
+        self, env_name: str, node_group: str, vars: dict
     ):
         self._execute(
             who_am_i(), envName=env_name, nodeGroup=node_group, data=json.dumps(vars)

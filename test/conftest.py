@@ -182,7 +182,7 @@ def new_env_name(control_client: ControlClient, commit_sha: str, worker_id: str)
 
 
 @pytest.fixture
-def created_environment(control_client: ControlClient, new_env_name) -> EnvInfo:
+def created_environment(control_client: ControlClient, new_env_name: str) -> EnvInfo:
     env = EnvSettings(shortdomain=new_env_name)
     sql_node = NodeSettings(
         fixedCloudlets=3, flexibleCloudlets=4, nodeType="postgresql"

@@ -1,3 +1,5 @@
+from typing import List
+
 import pytest
 
 from jelastic_client import EnvInfo, EnvStatus, Node, Nodes
@@ -375,7 +377,7 @@ def test_env_info_nodes(input_dict: dict, expected_nodes: Nodes):
     ],
 )
 def test_env_info_get_node_ips_returns_filtered_ips(
-    input_dict: dict, node_group: str, node_type: str, expected_ips: [str]
+    input_dict: dict, node_group: str, node_type: str, expected_ips: List[str]
 ):
     # Arrange
     env_info = EnvInfo(input_dict)

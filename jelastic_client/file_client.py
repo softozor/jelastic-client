@@ -1,3 +1,5 @@
+from typing import Optional
+
 from jelastic_client.core import ApiClient, BaseClient, who_am_i
 
 
@@ -13,9 +15,9 @@ class FileClient(BaseClient):
         self,
         env_name: str,
         path: str,
-        node_type: str = None,
-        node_group: str = None,
-        node_id: str = None,
+        node_type: Optional[str] = None,
+        node_group: Optional[str] = None,
+        node_id: Optional[str] = None,
     ) -> str:
         response = self._execute(
             who_am_i(),

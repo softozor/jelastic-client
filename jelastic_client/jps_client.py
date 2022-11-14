@@ -1,4 +1,5 @@
 import json
+from typing import Optional
 
 import requests
 
@@ -16,9 +17,9 @@ class JpsClient(BaseClient):
     def install_from_file(
         self,
         filename: str,
-        env_name: str = None,
-        settings: dict = None,
-        region: str = None,
+        env_name: Optional[str] = None,
+        settings: Optional[dict] = None,
+        region: Optional[str] = None,
     ) -> str:
         try:
             file = open(filename, "r")
@@ -30,7 +31,11 @@ class JpsClient(BaseClient):
             return self.install(manifest_content, env_name, settings, region=region)
 
     def install_from_url(
-        self, url: str, env_name: str = None, settings: dict = None, region: str = None
+        self,
+        url: str,
+        env_name: Optional[str] = None,
+        settings: Optional[dict] = None,
+        region: Optional[str] = None,
     ) -> str:
         response = requests.get(url)
         if response.status_code != 200:
@@ -41,9 +46,9 @@ class JpsClient(BaseClient):
     def install(
         self,
         manifest_content: str,
-        env_name: str = None,
-        settings: dict = None,
-        region: str = None,
+        env_name: Optional[str] = None,
+        settings: Optional[dict] = None,
+        region: Optional[str] = None,
     ) -> str:
         response = self._execute(
             who_am_i(),

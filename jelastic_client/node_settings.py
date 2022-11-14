@@ -1,19 +1,22 @@
-from typing import List, NamedTuple
+from dataclasses import dataclass
+from typing import List, Optional
 
 
-class DockerSettings(NamedTuple):
+@dataclass
+class DockerSettings:
     image: str
-    nodeGroup: str = None
+    nodeGroup: Optional[str] = None
 
 
-class NodeSettings(NamedTuple):
-    docker: DockerSettings = None
+@dataclass
+class NodeSettings:
+    docker: Optional[DockerSettings] = None
     count: int = 1
-    displayName: str = None
+    displayName: Optional[str] = None
     extip: bool = False
-    fixedCloudlets: int = None
-    flexibleCloudlets: int = None
-    nodeType: str = None
+    fixedCloudlets: Optional[int] = None
+    flexibleCloudlets: Optional[int] = None
+    nodeType: Optional[str] = None
 
 
 MultipleNodeSettings = List[NodeSettings]

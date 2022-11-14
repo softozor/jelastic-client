@@ -1,10 +1,12 @@
-from typing import NamedTuple
+from dataclasses import dataclass
+from typing import Optional
 
 
-class EnvSettings(NamedTuple):
-    displayName: str = None
-    engine: str = None
+@dataclass
+class EnvSettings:
+    displayName: Optional[str] = None
+    engine: Optional[str] = None
     ishaenabled: bool = False
-    region: str = None
-    shortdomain: str = None
+    region: Optional[str] = None
+    shortdomain: Optional[str] = None
     sslstate: bool = False

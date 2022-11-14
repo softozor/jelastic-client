@@ -1,3 +1,5 @@
+from typing import List, Optional
+
 from jelastic_client.env_status import EnvStatus
 from jelastic_client.node import Node, Nodes
 
@@ -47,7 +49,9 @@ class EnvInfo:
             and self.status() is not EnvStatus.Unknown
         )
 
-    def get_nodes(self, node_group: str = None, node_type: str = None) -> Nodes:
+    def get_nodes(
+        self, node_group: Optional[str] = None, node_type: Optional[str] = None
+    ) -> Nodes:
         env_nodes = self._nodes
 
         nodes_with_node_group = []
@@ -68,7 +72,7 @@ class EnvInfo:
 
         return list(set(nodes_with_node_type).intersection(nodes_with_node_group))
 
-    def get_node_from_name(self, display_name: str) -> Node:
+    def get_node_from_name(self, display_name: str) -> Optional[Node]:
         nodes_with_display_name = [
             env_node
             for env_node in self._nodes
@@ -76,21 +80,23 @@ class EnvInfo:
         ]
         return nodes_with_display_name[0] if len(nodes_with_display_name) == 1 else None
 
-    def get_node_ips(self, node_group: str = None, node_type: str = None) -> [str]:
+    def get_node_ips(
+        self, node_group: Optional[str] = None, node_type: Optional[str] = None
+    ) -> List[str]:
         nodes = self.get_nodes(node_group, node_type)
         return [node.int_ip for node in nodes]
 
-    def get_node_ip_from_name(self, display_name: str) -> str:
+    def get_node_ip_from_name(self, display_name: str) -> Optional[str]:
         node = self.get_node_from_name(display_name)
         return node.int_ip if node is not None else None
 
-    def get_node_url_from_name(self, display_name: str) -> str:
+    def get_node_url_from_name(self, display_name: str) -> Optional[str]:
         node = self.get_node_from_name(display_name)
         if node is None:
             return None
         return node.url
 
-    def get_node_hostname_from_name(self, display_name: str) -> str:
+    def get_node_hostname_from_name(self, display_name: str) -> Optional[str]:
         url = self.get_node_url_from_name(display_name)
         if url is None:
             return None
