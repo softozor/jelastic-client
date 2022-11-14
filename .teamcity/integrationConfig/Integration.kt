@@ -24,7 +24,7 @@ class Integration(
 
     steps {
         publishCommitShortSha()
-        buildPythonPackage("%system.docker-registry.group%/docker-tools/poetry:$dockerTag")
+        buildPythonPackage("docker-tools/poetry:$dockerTag")
         toxPythonPackage("docker-tools/python-tests:$dockerTag", testArgs = listOf(
             "-n 4",
             "--api-token=%system.jelastic.access-token%",
