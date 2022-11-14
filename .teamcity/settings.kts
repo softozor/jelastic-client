@@ -1,4 +1,5 @@
 import integrationConfig.Integration
+import integrationConfig.ReleaseToPypi
 import jetbrains.buildServer.configs.kotlin.*
 
 /*
@@ -33,9 +34,8 @@ project {
     val dockerToolsTag = "3bd97369"
 
     val integrationBuild = Integration(dockerTag = dockerToolsTag)
+    val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
 
     buildType(integrationBuild)
-
-    // TODO: we also need a separate build config that will push the wheel on tagging
-    // TODO: we want to publish to pypi.org too, but only the non-dev versions
+    buildType(releaseBuild)
 }
