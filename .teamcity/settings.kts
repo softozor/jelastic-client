@@ -1,6 +1,7 @@
 import integrationConfig.Integration
 import integrationConfig.ReleaseToPypi
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.projectFeatures.buildReportTab
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -31,12 +32,18 @@ project {
         param("jelastic.version", "7.0.3")
     }
 
-    val dockerToolsTag = "3bd97369"
+    val dockerToolsTag = "d28ee259"
 
-    // TODO: add weekly trigger to the Integration config
     val integrationBuild = Integration(dockerTag = dockerToolsTag)
     // TODO: test this config
     val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
+
+    features {
+        buildReportTab {
+            title = "Mutation Tests"
+            startPage = "mutmut.html"
+        }
+    }
 
     buildType(integrationBuild)
     buildType(releaseBuild)
