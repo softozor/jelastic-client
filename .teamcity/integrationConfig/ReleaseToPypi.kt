@@ -15,14 +15,15 @@ class ReleaseToPypi(
 
     vcs {
         root(DslContext.settingsRoot)
+        cleanCheckout = true
+        branchFilter = """
+            +:v*
+            -:<default>
+        """.trimIndent()
     }
 
     triggers {
         vcs {
-            branchFilter = """
-                +:v*
-                -:<default>
-            """.trimIndent()
         }
     }
 

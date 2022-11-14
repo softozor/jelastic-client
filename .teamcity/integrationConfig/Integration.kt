@@ -15,6 +15,11 @@ class Integration(
 
     vcs {
         root(DslContext.settingsRoot)
+        cleanCheckout = true
+        branchFilter = """
+            +:*
+            -:v*
+        """.trimIndent()
     }
 
     triggers {
@@ -35,11 +40,11 @@ class Integration(
         publishPythonPackageToHosted("docker-tools/poetry:$dockerTag")
     }
 
-    // TODO: add mutmut.*ml
     artifactRules = """
         dist/*.whl
         dist/PKG-INFO.txt
         coverage.zip
+        mutmut.*ml
     """.trimIndent()
 
     // TODO: add tab for mutmut

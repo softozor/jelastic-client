@@ -35,6 +35,7 @@ project {
 
     // TODO: add weekly trigger to the Integration config
     val integrationBuild = Integration(dockerTag = dockerToolsTag)
+    // TODO: test this config
     val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
 
     buildType(integrationBuild)
