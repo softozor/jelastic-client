@@ -38,13 +38,6 @@ project {
     // TODO: test this config
     val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
 
-    features {
-        buildReportTab {
-            title = "Mutation Tests"
-            startPage = "mutmut.html"
-        }
-    }
-
     buildType(integrationBuild)
     buildType(releaseBuild)
 }

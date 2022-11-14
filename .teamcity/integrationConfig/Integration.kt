@@ -64,7 +64,6 @@ class Integration(
         dist/*.whl
         dist/PKG-INFO.txt
         coverage.zip
-        mutmut.*ml
     """.trimIndent()
 
     features {
