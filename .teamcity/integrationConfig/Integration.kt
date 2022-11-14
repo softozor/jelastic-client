@@ -31,7 +31,7 @@ object Integration : BuildType({
                 
                 poetry build
             """.trimIndent()
-            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:2fbed785"
+            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:ef2125b3"
             dockerPull = true
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
@@ -43,7 +43,7 @@ object Integration : BuildType({
                 pyenv local 3.8 3.9 3.10 3.11
                 tox -- -s -v --cov jelastic_client --cov-report term-missing --cov-report html --teamcity --cov-append test -n 4 --api-token=%system.jelastic.access-token% --jelastic-version=%jelastic.version% --commit-sha=%build.vcs.number% --jelastic-user-email=%system.jelastic.user-email%       
             """.trimIndent()
-            dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:2fbed785"
+            dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:ef2125b3"
             dockerPull = true
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
@@ -60,7 +60,7 @@ object Integration : BuildType({
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
                 poetry publish -r pypi-hosted
             """.trimIndent()
-            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:2fbed785"
+            dockerImage = "%system.docker-registry.group%/docker-tools/poetry:ef2125b3"
             dockerPull = true
             dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
         }
