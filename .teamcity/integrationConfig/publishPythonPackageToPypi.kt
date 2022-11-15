@@ -12,6 +12,12 @@ fun BuildSteps.publishPythonPackageToPypi(dockerImage: String): ScriptBuildStep 
                 
                 set -e
                 
+                tag=${'$'}(git describe --always --tags --match v*)
+                distance=${'$'}(echo ${'$'}tag | cut -d "-" -f 2)
+                if [ "${'$'}tag" = "${'$'}distance" ] ; then
+                  exit 0
+                fi
+                
                 poetry publish -u %system.pypi-registry.pypi-org.username% -p %system.pypi-registry.pypi-org.password%
             """.trimIndent()
         this.dockerImage = "%system.docker-registry.group%/$dockerImage"

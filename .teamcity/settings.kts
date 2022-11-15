@@ -1,7 +1,5 @@
 import integrationConfig.Integration
-import integrationConfig.ReleaseToPypi
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.projectFeatures.buildReportTab
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -35,9 +33,5 @@ project {
     val dockerToolsTag = "d28ee259"
 
     val integrationBuild = Integration(dockerTag = dockerToolsTag)
-    // TODO: test this config
-    val releaseBuild = ReleaseToPypi(dockerTag = dockerToolsTag)
-
     buildType(integrationBuild)
-    buildType(releaseBuild)
 }

@@ -58,6 +58,7 @@ class Integration(
             )
         )
         publishPythonPackageToHosted("docker-tools/poetry:$dockerTag")
+        publishPythonPackageToPypi("docker-tools/poetry:$dockerTag")
     }
 
     artifactRules = """
