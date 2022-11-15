@@ -8,7 +8,7 @@ from .core import ApiClient, BaseClient, JelasticClientException, who_am_i
 from .env_info import EnvInfo
 from .env_settings import EnvSettings
 from .env_status import EnvStatus
-from .node_settings import MultipleNodeSettings
+from .node_settings import MultipleNodeSettings, NodeSettings
 
 
 class ControlClient(BaseClient):
@@ -28,8 +28,8 @@ class ControlClient(BaseClient):
     def create_environment(
         self, env: EnvSettings, nodes: MultipleNodeSettings
     ) -> EnvInfo:
-        env_json = json.dumps(env)
-        nodes_json = json.dumps(nodes)
+        env_json = env.to_json()  # type: ignore
+        nodes_json = NodeSettings.schema().dumps(nodes, many=True)  # type: ignore
         response = self._execute(who_am_i(), env=env_json, nodes=nodes_json)
         return EnvInfo(response["response"])
 

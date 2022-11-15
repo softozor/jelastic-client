@@ -1,8 +1,11 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from dataclasses_json import dataclass_json
 
-@dataclass
+
+@dataclass_json
+@dataclass(frozen=True)
 class Node:
     id: int
     int_ip: str

@@ -1,14 +1,18 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from dataclasses_json import dataclass_json
 
-@dataclass
+
+@dataclass_json
+@dataclass(frozen=True)
 class DockerSettings:
     image: str
     nodeGroup: Optional[str] = None
 
 
-@dataclass
+@dataclass_json
+@dataclass(frozen=True)
 class NodeSettings:
     docker: Optional[DockerSettings] = None
     count: int = 1

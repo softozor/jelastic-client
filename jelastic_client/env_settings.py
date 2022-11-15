@@ -1,8 +1,13 @@
+from __future__ import annotations
+
 from dataclasses import dataclass
 from typing import Optional
 
+from dataclasses_json import dataclass_json
 
-@dataclass
+
+@dataclass_json
+@dataclass(frozen=True)
 class EnvSettings:
     displayName: Optional[str] = None
     engine: Optional[str] = None
