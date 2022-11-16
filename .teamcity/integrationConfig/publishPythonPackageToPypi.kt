@@ -14,7 +14,8 @@ fun BuildSteps.publishPythonPackageToPypi(dockerImage: String): ScriptBuildStep 
                 
                 tag=${'$'}(git describe --always --tags --match v*)
                 distance=${'$'}(echo ${'$'}tag | cut -d "-" -f 2)
-                if [ "${'$'}tag" = "${'$'}distance" ] ; then
+                if [ "${'$'}tag" != "${'$'}distance" ] ; then
+                  # we are not on a tag
                   exit 0
                 fi
                 
