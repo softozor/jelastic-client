@@ -28,13 +28,13 @@ class Integration(
             branchFilter = """
                 +:*
             """.trimIndent()
-            triggerRules = """
-                +:*
-                -:.teamcity/**
-                -:.gitignore
-                -:.pre-commit-config.yaml
-                -:README.md
-            """.trimIndent()
+//            triggerRules = """
+//                +:*
+//                -:.teamcity/**
+//                -:.gitignore
+//                -:.pre-commit-config.yaml
+//                -:README.md
+//            """.trimIndent()
         }
         schedule {
             schedulingPolicy = weekly {
