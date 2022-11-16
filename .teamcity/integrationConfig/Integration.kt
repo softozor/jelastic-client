@@ -28,6 +28,7 @@ class Integration(
         vcs {
             branchFilter = """
                 +:*
+                -:v*
             """.trimIndent()
             triggerRules = """
                 +:jelastic_client/**
