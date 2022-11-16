@@ -20,7 +20,6 @@ class Integration(
         cleanCheckout = true
         branchFilter = """
             +:*
-            -:v*
         """.trimIndent()
     }
 
@@ -28,7 +27,10 @@ class Integration(
         vcs {
             branchFilter = """
                 +:*
-                -:v*
+                -:.teamcity
+                -:.gitignore
+                -:.pre-commit-config.yaml
+                -:README.md
             """.trimIndent()
         }
         schedule {
