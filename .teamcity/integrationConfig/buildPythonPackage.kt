@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.buildPythonPackage(dockerImage: String): ScriptBuildStep {
+fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
     return script {
         name = "Build"
         scriptContent = """
@@ -12,7 +12,7 @@ fun BuildSteps.buildPythonPackage(dockerImage: String): ScriptBuildStep {
                 
                 poetry build
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/$dockerImage"
+        this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }

@@ -10,7 +10,7 @@ import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import publishCommitShortSha
 
 class Integration(
-    dockerTag: String
+    dockerToolsTag: String
 ) : BuildType({
     id("Integration")
     name = "Integration"
@@ -58,9 +58,10 @@ class Integration(
 
     steps {
         publishCommitShortSha()
-        buildPythonPackage("docker-tools/poetry:$dockerTag")
+        buildPythonPackage(dockerToolsTag)
+        publishJelasticVersion()
         toxPythonPackage(
-            "docker-tools/python-tests:$dockerTag", testArgs = listOf(
+            dockerToolsTag, testArgs = listOf(
                 "-n 4",
                 "--api-token=%system.jelastic.access-token%",
                 "--jelastic-version=%jelastic.version%",
@@ -68,8 +69,8 @@ class Integration(
                 "--jelastic-user-email=%system.jelastic.user-email%"
             )
         )
-        publishPythonPackageToHosted("docker-tools/poetry:$dockerTag")
-        publishPythonPackageToPypi("docker-tools/poetry:$dockerTag")
+        publishPythonPackageToHosted(dockerToolsTag)
+        publishPythonPackageToPypi(dockerToolsTag)
     }
 
     artifactRules = """
@@ -91,6 +92,7 @@ class Integration(
     }
 
     params {
+        param("jelastic.version", "1.0.0")
         param("teamcity.vcsTrigger.runBuildInNewEmptyBranch", "true")
     }
 })

@@ -4,7 +4,7 @@ import jetbrains.buildServer.configs.kotlin.BuildSteps
 import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 
-fun BuildSteps.publishPythonPackageToHosted(dockerImage: String): ScriptBuildStep {
+fun BuildSteps.publishPythonPackageToHosted(dockerToolsTag: String): ScriptBuildStep {
     return script {
         name = "Publish"
         scriptContent = """
@@ -16,7 +16,7 @@ fun BuildSteps.publishPythonPackageToHosted(dockerImage: String): ScriptBuildSte
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
                 poetry publish -r pypi-hosted
             """.trimIndent()
-        this.dockerImage = "%system.docker-registry.group%/$dockerImage"
+        this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
         dockerPull = true
         dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
     }
