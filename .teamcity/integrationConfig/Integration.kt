@@ -14,6 +14,7 @@ class Integration(
 ) : BuildType({
     id("Integration")
     name = "Integration"
+    allowExternalStatus = true
 
     vcs {
         root(DslContext.settingsRoot)
