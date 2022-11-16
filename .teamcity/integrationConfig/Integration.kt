@@ -30,11 +30,8 @@ class Integration(
                 +:*
             """.trimIndent()
             triggerRules = """
-                +:*
-                -:.teamcity/**
-                -:.gitignore
-                -:.pre-commit-config.yaml
-                -:README.md
+                +:jelastic_client/**
+                +:test/**
             """.trimIndent()
         }
         // on tags, because they are triggered with no code (just a pushed tag), we want no trigger rules, i.e.
