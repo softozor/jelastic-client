@@ -1,4 +1,4 @@
-[[![Build Status](https://jelasticozor-teamcity.sh1.hidora.com/app/rest/builds/buildType:(id:SharedLibraries_JelasticClient_Integration)/statusIcon)](https://jelasticozor-teamcity.sh1.hidora.com/viewType.html?buildTypeId=SharedLibraries_JelasticClient_Integration&guest=1)
+[![Build Status](https://jelasticozor-teamcity.sh1.hidora.com/app/rest/builds/buildType:(id:SharedLibraries_JelasticClient_Integration)/statusIcon)](https://jelasticozor-teamcity.sh1.hidora.com/viewType.html?buildTypeId=SharedLibraries_JelasticClient_Integration&guest=1)
 
 
 # jelastic-client
