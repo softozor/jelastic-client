@@ -24,17 +24,25 @@ class Integration(
     }
 
     triggers {
+        // in general, we only want to trigger a build if there were significant code changes
         vcs {
             branchFilter = """
                 +:*
             """.trimIndent()
-//            triggerRules = """
-//                +:*
-//                -:.teamcity/**
-//                -:.gitignore
-//                -:.pre-commit-config.yaml
-//                -:README.md
-//            """.trimIndent()
+            triggerRules = """
+                +:*
+                -:.teamcity/**
+                -:.gitignore
+                -:.pre-commit-config.yaml
+                -:README.md
+            """.trimIndent()
+        }
+        // on tags, because they are triggered with no code (just a pushed tag), we want no trigger rules, i.e.
+        // any change to the repo is significant
+        vcs {
+            branchFilter = """
+                +:v*
+            """.trimIndent()
         }
         schedule {
             schedulingPolicy = weekly {
