@@ -27,7 +27,10 @@ class Integration(
         vcs {
             branchFilter = """
                 +:*
-                -:.teamcity
+            """.trimIndent()
+            triggerRules = """
+                +:*
+                -:.teamcity/**
                 -:.gitignore
                 -:.pre-commit-config.yaml
                 -:README.md
