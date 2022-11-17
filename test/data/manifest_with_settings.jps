@@ -15,5 +15,5 @@ settings:
 success:
   email: false
   text: |
-    **field1**: ${settings.field1}
+    **field1**: ${settings.field1}  
     **field2**: ${settings.field2}
