@@ -1,5 +1,10 @@
 package integrationConfig
 
+import common.git.publishCommitShortSha
+import common.python.buildPythonPackage
+import common.python.publishPythonPackageToHosted
+import common.python.publishPythonPackageToPypi
+import common.python.toxPythonPackage
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
@@ -7,7 +12,6 @@ import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.triggers.ScheduleTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.schedule
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
-import publishCommitShortSha
 
 class Integration(
     dockerToolsTag: String
