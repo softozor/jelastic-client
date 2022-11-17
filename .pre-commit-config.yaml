@@ -1,27 +1,33 @@
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.3.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: debug-statements
   - repo: https://github.com/psf/black
     rev: 22.10.0
     hooks:
       - id: black
-        args: 
+        args:
           - --target-version=py38
   - repo: https://github.com/asottile/blacken-docs
     rev: v1.12.1
     hooks:
       - id: blacken-docs
-        args: 
+        args:
           - --target-version=py38
   - repo: https://github.com/PyCQA/flake8
     rev: 5.0.4
     hooks:
       - id: flake8
         language_version: python3.8
-        args: 
-          - --count 
+        args:
+          - --count
           - --show-source
-          - --statistics 
-          - --per-file-ignores 
-          - __init__.py:F401 
+          - --statistics
+          - --per-file-ignores
+          - __init__.py:F401
           - --max-line-length=120
   - repo: https://github.com/PyCQA/isort
     rev: 5.10.1
@@ -34,13 +40,11 @@ repos:
       - id: poetry-lock
       - id: poetry-export
         args: [ "-f", "requirements.txt", "-o", "requirements.txt" ]
-# TODO: why isn't this working?        
-#  - repo: https://github.com/pre-commit/pre-commit-hooks
-#    rev: v4.3.0
-#    hooks:
-#      - id: trailing-whitespace
-#      - id: end-of-file-fixer
-#      - id: debug-statements
+  - repo: https://github.com/PyCQA/bandit
+    rev: '1.7.4'
+    hooks:
+      - id: bandit
+        args: [-x, test, --recursive, jelastic_client]
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v0.990
     hooks:

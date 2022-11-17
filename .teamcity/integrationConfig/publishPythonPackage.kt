@@ -9,9 +9,9 @@ fun BuildSteps.publishPythonPackageToHosted(dockerToolsTag: String): ScriptBuild
         name = "Publish"
         scriptContent = """
                 #! /bin/sh
-                
+
                 set -e
-                
+
                 poetry config repositories.pypi-hosted https://%system.pypi-registry.hosted%/
                 poetry config http-basic.pypi-hosted %system.package-manager.deployer.username% %system.package-manager.deployer.password%
                 poetry publish -r pypi-hosted

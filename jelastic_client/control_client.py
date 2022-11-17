@@ -109,5 +109,5 @@ class ControlClient(BaseClient):
 
     @staticmethod
     def _create_random_env_name():
-        env_id = "".join(random.choice(string.digits) for _ in range(7))
+        env_id = "".join(random.choice(string.digits) for _ in range(7))  # nosec
         return f"env-{env_id}"

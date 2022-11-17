@@ -9,7 +9,7 @@ fun BuildSteps.buildPythonPackage(dockerToolsTag: String): ScriptBuildStep {
         name = "Build"
         scriptContent = """
                 #! /bin/sh
-                
+
                 poetry build
             """.trimIndent()
         this.dockerImage = "%system.docker-registry.group%/docker-tools/poetry:$dockerToolsTag"
