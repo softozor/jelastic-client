@@ -1,5 +1,6 @@
 import os
 import random
+import sys
 from test.utils import get_new_random_env_name
 from typing import Generator, Tuple, TypeVar
 
@@ -64,7 +65,9 @@ def pytest_addoption(parser):
 
 @pytest.fixture(autouse=True, scope="session")
 def random_seed() -> None:
-    random.seed("softozor/jelastic-client")
+    random.seed(
+        f"softozor/jelastic-client/py-{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+    )
 
 
 @pytest.fixture
