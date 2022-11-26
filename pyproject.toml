@@ -7,6 +7,11 @@ license = "MIT"
 readme = "README.md"
 packages = [{include = "jelastic_client"}]
 
+[[tool.poetry.source]]
+name = "pypi-group"
+url = "https://jelasticozor-pm.hidora.com/repository/pypi/simple"
+default = true
+
 [tool.poetry.dependencies]
 python = "^3.8"
 httpx = {version = ">=0.18", extras = ["http2"]}
