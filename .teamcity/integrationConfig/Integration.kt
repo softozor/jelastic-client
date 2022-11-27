@@ -1,10 +1,7 @@
 package integrationConfig
 
 import common.git.publishCommitShortSha
-import common.python.buildPythonPackage
-import common.python.publishPythonPackageToHosted
-import common.python.publishPythonPackageToPypi
-import common.python.toxPythonPackage
+import common.python.*
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
@@ -63,6 +60,7 @@ class Integration(
 
     steps {
         publishCommitShortSha()
+        setupBasicAuth()
         buildPythonPackage(dockerToolsTag)
         publishJelasticVersion()
         toxPythonPackage(
