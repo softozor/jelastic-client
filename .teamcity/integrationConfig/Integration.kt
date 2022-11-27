@@ -60,7 +60,6 @@ class Integration(
 
     steps {
         publishCommitShortSha()
-        setupBasicAuth()
         buildPythonPackage(dockerToolsTag)
         publishJelasticVersion()
         toxPythonPackage(
