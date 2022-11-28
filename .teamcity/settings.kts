@@ -1,5 +1,6 @@
 import integrationConfig.Integration
-import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.project
+import jetbrains.buildServer.configs.kotlin.version
 
 /*
 The settings script is an entry point for defining a TeamCity
@@ -26,6 +27,10 @@ To debug in IntelliJ Idea, open the 'Maven Projects' tool window (View
 version = "2022.10"
 
 project {
+    params {
+        param("teamcity.ui.settings.readOnly", "true")
+    }
+
     val dockerToolsTag = "d28ee259"
 
     val integrationBuild = Integration(dockerToolsTag = dockerToolsTag)
