@@ -1,7 +1,10 @@
 package integrationConfig
 
 import common.git.publishCommitShortSha
-import common.python.*
+import common.python.buildPythonPackage
+import common.python.publishPythonPackageToHosted
+import common.python.publishPythonPackageToPypi
+import common.python.toxPythonPackage
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
@@ -63,13 +66,14 @@ class Integration(
         buildPythonPackage(dockerToolsTag)
         publishJelasticVersion()
         toxPythonPackage(
-            dockerToolsTag, testArgs = listOf(
+            dockerToolsTag,
+            testArgs = listOf(
                 "-n 4",
                 "--api-token=%system.jelastic.access-token%",
                 "--jelastic-version=%jelastic.version%",
                 "--commit-sha=%build.vcs.number%",
                 "--jelastic-user-email=%system.jelastic.user-email%"
-            )
+            ),
         )
         publishPythonPackageToHosted(dockerToolsTag)
         publishPythonPackageToPypi(dockerToolsTag)

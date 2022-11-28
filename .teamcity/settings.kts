@@ -31,7 +31,7 @@ project {
         param("teamcity.ui.settings.readOnly", "true")
     }
 
-    val dockerToolsTag = "d28ee259"
+    val dockerToolsTag = "ca2d28e"
 
     val integrationBuild = Integration(dockerToolsTag = dockerToolsTag)
     buildType(integrationBuild)
