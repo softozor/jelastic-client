@@ -50,6 +50,17 @@ class JpsClient(BaseClient):
         settings: Optional[dict] = None,
         region: Optional[str] = None,
     ) -> str:
+        """
+        Install a custom JPS manifest.
+
+        :param manifest_content: the content of the manifest file
+        :param env_name: the environment name; it can only be empty (or None)
+                         if the manifest is of type "install" and creates no nodes
+        :param settings: the manifest settings
+        :param region: the region where to install the manifest
+                       (supported by the Jelastic provider)
+        :return: manifest success text
+        """
         response = self._execute(
             who_am_i(),
             jps=manifest_content,

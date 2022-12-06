@@ -177,6 +177,26 @@ def test_jps_client_install_from_url_manifest_url_with_settings_takes_settings_i
         assert expected_settings[field] == manifest_data[field]
 
 
+def test_jps_client_install_environment_with_nodes_but_no_env_name_provided_throws(
+    jps_client: JpsClient, valid_manifest_url: str
+):
+    # Arrange
+
+    # Act / Assert
+    with pytest.raises(JelasticClientException):
+        jps_client.install_from_url(valid_manifest_url)
+
+
+def test_jps_client_update_environment_but_no_env_name_provided_throws(
+    jps_client: JpsClient, valid_update_manifest_url: str
+):
+    # Arrange
+
+    # Act / Assert
+    with pytest.raises(JelasticClientException):
+        jps_client.install_from_url(valid_update_manifest_url)
+
+
 def test_jps_client_get_engine_version_returns_supported_engine_version(
     jps_client: JpsClient, supported_jelastic_version: str
 ):

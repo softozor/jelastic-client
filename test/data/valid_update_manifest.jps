@@ -1,0 +1,5 @@
+type: update
+name: update manifest
+
+install:
+  - log: hi!

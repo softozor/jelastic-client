@@ -114,6 +114,14 @@ def valid_manifest_url(base_url) -> str:
 
 
 @pytest.fixture
+def valid_update_manifest_url(base_url) -> str:
+    url = f"{base_url}/test/data/valid_update_manifest.jps"
+    response = requests.get(url)
+    assert 200 == response.status_code
+    return url
+
+
+@pytest.fixture
 def manifest_file_with_settings() -> str:
     return os.path.join(here, "data", "manifest_with_settings.jps")
 
