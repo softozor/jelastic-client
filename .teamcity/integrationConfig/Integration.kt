@@ -5,9 +5,9 @@ import common.python.buildPythonPackage
 import common.python.publishPythonPackageToHosted
 import common.python.publishPythonPackageToPypi
 import common.python.toxPythonPackage
+import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
-import jetbrains.buildServer.configs.kotlin.buildFeatures.dockerSupport
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.triggers.ScheduleTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.schedule
@@ -16,6 +16,8 @@ import jetbrains.buildServer.configs.kotlin.triggers.vcs
 class Integration(
     dockerToolsTag: String
 ) : BuildType({
+    templates(NexusDockerLogin)
+
     id("Integration")
     name = "Integration"
     allowExternalStatus = true
@@ -87,13 +89,6 @@ class Integration(
 
     features {
         perfmon {
-        }
-
-        dockerSupport {
-            cleanupPushedImages = true
-            loginToRegistry = on {
-                dockerRegistryId = "PROJECT_EXT_3"
-            }
         }
     }
 
