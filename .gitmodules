@@ -1,3 +1,1 @@
-[submodule ".teamcity/common"]
-	path = .teamcity/common
-	url = https://github.com/softozor/teamcity-common
+
