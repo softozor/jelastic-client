@@ -106,6 +106,13 @@ class ControlClient(BaseClient):
         self._execute(
             who_am_i(), envName=env_name, nodeGroup=node_group, data=json.dumps(vars)
         )
+        
+    def redeploy_container_by_id(
+        self, env_name: str, node_id: str, tag: string
+    ):
+        self._execute(
+            who_am_i(), envName=env_name, nodeId=node_id, tag=tag
+        )
 
     @staticmethod
     def _create_random_env_name():
