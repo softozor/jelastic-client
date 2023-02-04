@@ -1,9 +1,7 @@
 package integrationConfig
 
 import common.git.publishCommitShortSha
-import common.python.buildPythonPackage
-import common.python.publishPythonPackageToHosted
-import common.python.publishPythonPackageToPypi
+import common.python.*
 import common.python.toxPythonPackage
 import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
@@ -67,6 +65,7 @@ class Integration(
         publishCommitShortSha()
         buildPythonPackage(dockerToolsTag)
         publishJelasticVersion()
+        lint(dockerToolsTag)
         toxPythonPackage(
             dockerToolsTag,
             testArgs = listOf(
