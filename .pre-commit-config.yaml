@@ -12,18 +12,18 @@ repos:
     hooks:
       - id: black
         args:
-          - --target-version=py38
+          - --target-version=py311
   - repo: https://github.com/asottile/blacken-docs
     rev: v1.12.1
     hooks:
       - id: blacken-docs
         args:
-          - --target-version=py38
+          - --target-version=py311
   - repo: https://github.com/PyCQA/flake8
     rev: 5.0.4
     hooks:
       - id: flake8
-        language_version: python3.8
+        language_version: python3.11
         args:
           - --count
           - --show-source
