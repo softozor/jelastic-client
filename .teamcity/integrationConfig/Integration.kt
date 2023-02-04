@@ -7,6 +7,8 @@ import common.templates.NexusDockerLogin
 import jetbrains.buildServer.configs.kotlin.BuildType
 import jetbrains.buildServer.configs.kotlin.DslContext
 import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
+import jetbrains.buildServer.configs.kotlin.buildSteps.ScriptBuildStep
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.triggers.ScheduleTrigger
 import jetbrains.buildServer.configs.kotlin.triggers.schedule
 import jetbrains.buildServer.configs.kotlin.triggers.vcs
@@ -65,6 +67,13 @@ class Integration(
         publishCommitShortSha()
         buildPythonPackage(dockerToolsTag)
         publishJelasticVersion()
+        script {
+            name = "pre commit hook"
+            scriptContent = "pre-commit run --all-files"
+            dockerImage = "%system.docker-registry.group%/docker-tools/python-tests:$dockerToolsTag"
+            dockerPull = true
+            dockerImagePlatform = ScriptBuildStep.ImagePlatform.Linux
+        }
         lint(dockerToolsTag)
         toxPythonPackage(
             dockerToolsTag,
