@@ -62,10 +62,10 @@ class Integration(
 
     steps {
         publishCommitShortSha()
-        buildPythonPackage(dockerToolsTag)
+        build(dockerToolsTag)
         publishJelasticVersion()
         lint(dockerToolsTag)
-        toxPythonPackage(
+        tox(
             dockerToolsTag,
             testArgs = listOf(
                 "-n 4",
@@ -75,8 +75,8 @@ class Integration(
                 "--jelastic-user-email=%system.jelastic.user-email%"
             ),
         )
-        publishPythonPackageToHosted(dockerToolsTag)
-        publishPythonPackageToPypi(dockerToolsTag)
+        publishToHosted(dockerToolsTag)
+        publishToPypi(dockerToolsTag)
     }
 
     artifactRules = """
