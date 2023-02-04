@@ -105,7 +105,7 @@ def test_jps_client_install_from_url_valid_manifest_url_returns_success_text(
 
 
 def test_jps_client_install_from_valid_manifest_url_with_modified_success_returns_expected_success_text(
-    jps_client: JpsClient, manifest_url_with_settings: str, new_env_name: str
+    jps_client: JpsClient, manifest_url_with_settings: str
 ):
     # Arrange
     success = {
@@ -116,7 +116,7 @@ def test_jps_client_install_from_valid_manifest_url_with_modified_success_return
 
     # Act
     actual_success_text = jps_client.install_from_url(
-        manifest_url_with_settings, new_env_name, success=success
+        manifest_url_with_settings, success=success, settings=settings
     )
 
     # Assert
@@ -125,7 +125,7 @@ def test_jps_client_install_from_valid_manifest_url_with_modified_success_return
 
 
 def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_returns_expected_success_text(
-    jps_client: JpsClient, manifest_file_with_settings: str, new_env_name: str
+    jps_client: JpsClient, manifest_file_with_settings: str
 ):
     # Arrange
     success = {
@@ -136,7 +136,7 @@ def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_
 
     # Act
     actual_success_text = jps_client.install_from_file(
-        manifest_file_with_settings, new_env_name, success=success
+        manifest_file_with_settings, success=success, settings=settings
     )
 
     # Assert
@@ -145,7 +145,7 @@ def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_
 
 
 def test_jps_client_install_from_valid_manifest_url_with_modified_success_returns_parsable_success_text(
-    jps_client: JpsClient, manifest_url_with_settings: str, new_env_name: str
+    jps_client: JpsClient, manifest_url_with_settings: str
 ):
     # Arrange
     success = {
@@ -156,7 +156,7 @@ def test_jps_client_install_from_valid_manifest_url_with_modified_success_return
 
     # Act
     success_text = jps_client.install_from_url(
-        manifest_url_with_settings, new_env_name, success=success
+        manifest_url_with_settings, success=success, settings=settings
     )
     actual_success_dict = get_manifest_data(success_text)
 
@@ -165,7 +165,7 @@ def test_jps_client_install_from_valid_manifest_url_with_modified_success_return
 
 
 def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_returns_parsable_success_text(
-    jps_client: JpsClient, manifest_file_with_settings: str, new_env_name: str
+    jps_client: JpsClient, manifest_file_with_settings: str
 ):
     # Arrange
     success = {
@@ -176,7 +176,7 @@ def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_
 
     # Act
     success_text = jps_client.install_from_file(
-        manifest_file_with_settings, new_env_name, success=success
+        manifest_file_with_settings, success=success, settings=settings
     )
     actual_success_dict = get_manifest_data(success_text)
 

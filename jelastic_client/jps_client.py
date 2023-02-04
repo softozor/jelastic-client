@@ -2,6 +2,7 @@ import json
 from typing import Optional
 
 import requests  # type: ignore
+import yaml  # type: ignore
 
 from .core import ApiClient, BaseClient, JelasticClientException, who_am_i
 
@@ -69,7 +70,10 @@ class JpsClient(BaseClient):
         :param success: replacement for the success section in the input manifest
         :return: manifest success text
         """
-        # TODO: adapt manifest with provided success
+        if success:
+            manifest_content = self._replace_success_in_manifest(
+                manifest_content, success
+            )
 
         response = self._execute(
             who_am_i(),
@@ -81,6 +85,13 @@ class JpsClient(BaseClient):
         )
 
         return response["successText"]
+
+    @staticmethod
+    def _replace_success_in_manifest(manifest_content: str, success: dict) -> str:
+        manifest_data = yaml.safe_load(manifest_content)
+        manifest_data["success"] = success
+        updated_manifest_content = yaml.dump(manifest_data)
+        return updated_manifest_content
 
     def get_engine_version(self) -> str:
         response = self._execute(who_am_i())

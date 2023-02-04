@@ -518,6 +518,19 @@ url = "https://jelasticozor-pm.hidora.com/repository/pypi/simple"
 reference = "pypi-group"
 
 [[package]]
+name = "types-pyyaml"
+version = "6.0.12.4"
+description = "Typing stubs for PyYAML"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.source]
+type = "legacy"
+url = "https://jelasticozor-pm.hidora.com/repository/pypi/simple"
+reference = "pypi-group"
+
+[[package]]
 name = "typing-extensions"
 version = "4.4.0"
 description = "Backported and Experimental Type Hints for Python 3.7+"
@@ -568,7 +581,7 @@ reference = "pypi-group"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "9ee9ba9c07d7d3f108a36ec67292a3a7be50adc738ce386da899fbcfaac518d4"
+content-hash = "a80f8fac5ca672ed97d8d833705a153d483a48ae5ccbc1ed6d821221bd8d5000"
 
 [metadata.files]
 anyio = [
@@ -756,6 +769,10 @@ sniffio = [
 tomli = [
     {file = "tomli-2.0.1-py3-none-any.whl", hash = "sha256:939de3e7a6161af0c887ef91b7d41a53e7c5a1ca976325f429cb46ea9bc30ecc"},
     {file = "tomli-2.0.1.tar.gz", hash = "sha256:de526c12914f0c550d15924c62d72abc48d6fe7364aa87328337a31007fe8a4f"},
+]
+types-pyyaml = [
+    {file = "types-PyYAML-6.0.12.4.tar.gz", hash = "sha256:ade6e328a5a3df816c47c912c2e1e946ae2bace90744aa73111ee6834b03a314"},
+    {file = "types_PyYAML-6.0.12.4-py3-none-any.whl", hash = "sha256:de3bacfc4e0772d9b1baf007c37354f3c34c8952e90307d5155b6de0fc183a67"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.4.0-py3-none-any.whl", hash = "sha256:16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"},
