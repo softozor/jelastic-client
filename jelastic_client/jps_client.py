@@ -20,6 +20,7 @@ class JpsClient(BaseClient):
         env_name: Optional[str] = None,
         settings: Optional[dict] = None,
         region: Optional[str] = None,
+        success: Optional[dict] = None,
     ) -> str:
         try:
             file = open(filename, "r")
@@ -28,7 +29,9 @@ class JpsClient(BaseClient):
 
         with file:
             manifest_content = file.read()
-            return self.install(manifest_content, env_name, settings, region=region)
+            return self.install(
+                manifest_content, env_name, settings, region=region, success=success
+            )
 
     def install_from_url(
         self,
@@ -36,12 +39,15 @@ class JpsClient(BaseClient):
         env_name: Optional[str] = None,
         settings: Optional[dict] = None,
         region: Optional[str] = None,
+        success: Optional[dict] = None,
     ) -> str:
         response = requests.get(url)
         if response.status_code != 200:
             raise JelasticClientException(f"Url not found: {url}")
         manifest_content = response.text
-        return self.install(manifest_content, env_name, settings, region=region)
+        return self.install(
+            manifest_content, env_name, settings, region=region, success=success
+        )
 
     def install(
         self,
@@ -49,6 +55,7 @@ class JpsClient(BaseClient):
         env_name: Optional[str] = None,
         settings: Optional[dict] = None,
         region: Optional[str] = None,
+        success: Optional[dict] = None,
     ) -> str:
         """
         Install a custom JPS manifest.
@@ -59,8 +66,11 @@ class JpsClient(BaseClient):
         :param settings: the manifest settings
         :param region: the region where to install the manifest
                        (supported by the Jelastic provider)
+        :param success: replacement for the success section in the input manifest
         :return: manifest success text
         """
+        # TODO: adapt manifest with provided success
+
         response = self._execute(
             who_am_i(),
             jps=manifest_content,

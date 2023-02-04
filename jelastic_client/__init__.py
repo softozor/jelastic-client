@@ -7,5 +7,6 @@ from .env_status import EnvStatus
 from .factory import JelasticClientFactory
 from .file_client import FileClient
 from .jps_client import JpsClient
+from .manifest_data import get_manifest_data
 from .node import Node, Nodes
 from .node_settings import DockerSettings, NodeSettings
