@@ -34,7 +34,7 @@ project {
 
     template(NexusDockerLogin)
 
-    val dockerToolsTag = "ca2d28e2"
+    val dockerToolsTag = "b88a4596"
 
     val integrationBuild = Integration(dockerToolsTag = dockerToolsTag)
     buildType(integrationBuild)
