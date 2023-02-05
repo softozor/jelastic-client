@@ -1,11 +1,6 @@
 import pytest
 
-from jelastic_client import (
-    ControlClient,
-    JelasticClientException,
-    JpsClient,
-    get_manifest_data,
-)
+from jelastic_client import ControlClient, JelasticClientException, JpsClient
 
 
 def test_jps_client_install_from_file_valid_manifest_file_creates_environment(
@@ -104,84 +99,50 @@ def test_jps_client_install_from_url_valid_manifest_url_returns_success_text(
     assert expected_success_text == actual_success_text
 
 
-def test_jps_client_install_from_valid_manifest_url_with_modified_success_returns_expected_success_text(
+def test_jps_client_install_from_valid_manifest_url_with_env_props_query_returns_expected_env_props(
     jps_client: JpsClient, manifest_url_with_settings: str
 ):
     # Arrange
-    success = {
-        "email": False,
-        "text": "${settings.field2}, ${settings.field1}",
+    env_props_query = {
+        "first field": "${settings.field1}",
+        "second field": "${settings.field2}",
     }
     settings = {"field1": "value1", "field2": "value2"}
 
     # Act
-    actual_success_text = jps_client.install_from_url(
-        manifest_url_with_settings, success=success, settings=settings
+    actual_env_props = jps_client.install_from_url(
+        manifest_url_with_settings, env_props_query=env_props_query, settings=settings
     )
 
     # Assert
-    expected_success_text = f"{settings['field2']}, {settings['field1']}"
-    assert actual_success_text == expected_success_text
+    expected_env_props = {
+        "first field": "value1",
+        "second field": "value2",
+    }
+    assert actual_env_props == expected_env_props
 
 
-def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_returns_expected_success_text(
+def test_jps_client_install_from_valid_manifest_file_with_env_props_query_returns_expected_env_props(
     jps_client: JpsClient, manifest_file_with_settings: str
 ):
     # Arrange
-    success = {
-        "email": False,
-        "text": "${settings.field2}, ${settings.field1}",
+    env_props_query = {
+        "first field": "${settings.field1}",
+        "second field": "${settings.field2}",
     }
     settings = {"field1": "value1", "field2": "value2"}
 
     # Act
-    actual_success_text = jps_client.install_from_file(
-        manifest_file_with_settings, success=success, settings=settings
+    actual_env_props = jps_client.install_from_file(
+        manifest_file_with_settings, env_props_query=env_props_query, settings=settings
     )
 
     # Assert
-    expected_success_text = f"{settings['field2']}, {settings['field1']}"
-    assert actual_success_text == expected_success_text
-
-
-def test_jps_client_install_from_valid_manifest_url_with_modified_success_returns_parsable_success_text(
-    jps_client: JpsClient, manifest_url_with_settings: str
-):
-    # Arrange
-    success = {
-        "email": False,
-        "text": "field1: ${settings.field1}  \nfield2: ${settings.field2}",
+    expected_env_props = {
+        "first field": "value1",
+        "second field": "value2",
     }
-    settings = {"field1": "value1", "field2": "value2"}
-
-    # Act
-    success_text = jps_client.install_from_url(
-        manifest_url_with_settings, success=success, settings=settings
-    )
-    actual_success_dict = get_manifest_data(success_text)
-
-    # Assert
-    assert actual_success_dict == settings
-
-
-def test_jps_client_install_from_valid_manifest_file_with_modified_success_text_returns_parsable_success_text(
-    jps_client: JpsClient, manifest_file_with_settings: str
-):
-    # Arrange
-    success = {
-        "email": False,
-        "text": "field1: ${settings.field1}  \nfield2: ${settings.field2}",
-    }
-    settings = {"field1": "value1", "field2": "value2"}
-
-    # Act
-    success_text = jps_client.install_from_file(
-        manifest_file_with_settings, success=success, settings=settings
-    )
-    actual_success_dict = get_manifest_data(success_text)
-
-    # Assert
-    assert actual_success_dict == settings
+    assert actual_env_props == expected_env_props
 
 
 def test_jps_client_install_from_file_invalid_manifest_file_raises_exception(
@@ -222,42 +183,6 @@ def test_jps_client_install_from_url_non_existent_manifest_url_raises_exception(
     # Act / Assert
     with pytest.raises(JelasticClientException):
         jps_client.install_from_url(non_existent_manifest_url, new_env_name)
-
-
-def test_jps_client_install_from_file_manifest_file_with_settings_takes_settings_into_account(
-    jps_client: JpsClient, manifest_file_with_settings: str
-):
-    # Arrange
-    expected_settings = {"field1": "the value 1", "field2": "the value 2"}
-
-    # Act
-    success_text = jps_client.install_from_file(
-        manifest_file_with_settings, settings=expected_settings
-    )
-    manifest_data = get_manifest_data(success_text)
-
-    # Assert
-    for field in expected_settings:
-        assert field in manifest_data
-        assert expected_settings[field] == manifest_data[field]
-
-
-def test_jps_client_install_from_url_manifest_url_with_settings_takes_settings_into_account(
-    jps_client: JpsClient, manifest_url_with_settings: str
-):
-    # Arrange
-    expected_settings = {"field1": "the value 1", "field2": "the value 2"}
-
-    # Act
-    success_text = jps_client.install_from_url(
-        manifest_url_with_settings, settings=expected_settings
-    )
-    manifest_data = get_manifest_data(success_text)
-
-    # Assert
-    for field in expected_settings:
-        assert field in manifest_data
-        assert expected_settings[field] == manifest_data[field]
 
 
 def test_jps_client_install_environment_with_nodes_but_no_env_name_provided_throws(
