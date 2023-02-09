@@ -279,10 +279,10 @@ def test_control_client_add_container_env_vars_overwrites_already_existing_varia
     initial_env_vars = control_client.get_container_env_vars_by_group(
         valid_environment_with_env_vars, "cp"
     )
+    assert "MY_OTHER_VAR" in initial_env_vars
     vars_to_add = {
         "MY_OTHER_VAR": "value1",
     }
-    assert "MY_OTHER_VAR" in initial_env_vars
     assert initial_env_vars["MY_OTHER_VAR"] != vars_to_add["MY_OTHER_VAR"]
 
     # Act
@@ -304,16 +304,14 @@ def test_set_container_env_vars_removes_all_container_variables_except_path_and_
     # Arrange
     env_info = control_client.get_env_info(valid_environment_with_env_vars)
     cp_node = env_info.get_nodes(node_group="cp")[0]
-    cp_node_id = cp_node.id
-
     vars_to_set = {"MY_FIRST_NEW_VAR": "value1", "MY_SECOND_NEW_VAR": "value2"}
 
     # Act
     control_client.set_container_env_vars(
-        valid_environment_with_env_vars, vars=vars_to_set, node_id=cp_node_id
+        valid_environment_with_env_vars, vars=vars_to_set, node_id=cp_node.id
     )
-    actual_env_vars = control_client.get_container_env_vars_by_group(
-        valid_environment_with_env_vars, "cp"
+    actual_env_vars = control_client.get_container_env_vars(
+        valid_environment_with_env_vars, node_id=cp_node.id
     )
 
     # Assert
@@ -342,3 +340,49 @@ def test_set_container_env_vars_by_group_removes_all_container_variables_except_
     assert "MY_OTHER_VAR" not in actual_env_vars
     assert vars_to_set["MY_FIRST_NEW_VAR"] == actual_env_vars["MY_FIRST_NEW_VAR"]
     assert vars_to_set["MY_SECOND_NEW_VAR"] == actual_env_vars["MY_SECOND_NEW_VAR"]
+
+
+def test_set_container_env_vars_does_not_remove_path_env_var(
+    control_client: ControlClient, valid_environment_with_env_vars: str
+):
+    # Arrange
+    env_info = control_client.get_env_info(valid_environment_with_env_vars)
+    cp_node = env_info.get_nodes(node_group="cp")[0]
+    initial_env_vars = control_client.get_container_env_vars(
+        env_name=valid_environment_with_env_vars, node_id=cp_node.id
+    )
+    assert "PATH" in initial_env_vars
+    vars_to_set = {"MY_FIRST_NEW_VAR": "value1", "MY_SECOND_NEW_VAR": "value2"}
+
+    # Act
+    control_client.set_container_env_vars(
+        env_name=valid_environment_with_env_vars, vars=vars_to_set, node_id=cp_node.id
+    )
+    actual_env_vars = control_client.get_container_env_vars(
+        env_name=valid_environment_with_env_vars, node_id=cp_node.id
+    )
+
+    # Assert
+    assert "PATH" in actual_env_vars
+
+
+def test_set_container_env_vars_by_group_does_not_remove_path_env_var(
+    control_client: ControlClient, valid_environment_with_env_vars: str
+):
+    # Arrange
+    initial_env_vars = control_client.get_container_env_vars_by_group(
+        valid_environment_with_env_vars, "cp"
+    )
+    assert "PATH" in initial_env_vars
+    vars_to_set = {"MY_FIRST_NEW_VAR": "value1", "MY_SECOND_NEW_VAR": "value2"}
+
+    # Act
+    control_client.set_container_env_vars_by_group(
+        valid_environment_with_env_vars, vars=vars_to_set, node_group="cp"
+    )
+    actual_env_vars = control_client.get_container_env_vars_by_group(
+        valid_environment_with_env_vars, "cp"
+    )
+
+    # Assert
+    assert "PATH" in actual_env_vars
