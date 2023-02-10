@@ -342,7 +342,7 @@ def test_set_container_env_vars_by_group_removes_all_container_variables_except_
     assert vars_to_set["MY_SECOND_NEW_VAR"] == actual_env_vars["MY_SECOND_NEW_VAR"]
 
 
-def test_set_container_env_vars_does_not_remove_path_env_var(
+def test_set_container_env_vars_does_overwrite_currently_defined_env_var(
     control_client: ControlClient, valid_environment_with_env_vars: str
 ):
     # Arrange
@@ -363,10 +363,10 @@ def test_set_container_env_vars_does_not_remove_path_env_var(
     )
 
     # Assert
-    assert "PATH" in actual_env_vars
+    assert "PATH" not in actual_env_vars
 
 
-def test_set_container_env_vars_by_group_does_not_remove_path_env_var(
+def test_set_container_env_vars_by_group_does_overwrite_currently_defined_env_var(
     control_client: ControlClient, valid_environment_with_env_vars: str
 ):
     # Arrange
@@ -385,4 +385,4 @@ def test_set_container_env_vars_by_group_does_not_remove_path_env_var(
     )
 
     # Assert
-    assert "PATH" in actual_env_vars
+    assert "PATH" not in actual_env_vars
